@@ -1,0 +1,909 @@
+<!DOCTYPE html>
+<html lang="kn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ಎನ್‌ಎಂಎಂಎಸ್ 200 ಪ್ರಶ್ನೆಗಳು | ವಿಜ್ಞಾನ ಮತ್ತು ಗಣಿತ ಕ್ವಿಜ್ (ವಿವರಣೆ ಸಹಿತ)</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Noto Sans Kannada', 'Tunga', 'Arial', sans-serif;
+            background: linear-gradient(145deg, #f0f4fa 0%, #d9e3f0 100%);
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+        }
+
+        .quiz-container {
+            max-width: 1100px;
+            width: 100%;
+            background: #ffffffdd;
+            backdrop-filter: blur(4px);
+            border-radius: 40px;
+            box-shadow: 0 25px 50px -10px rgba(0, 20, 40, 0.35);
+            padding: 30px 25px;
+            border: 1px solid #ffffffaa;
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            color: #1e3c5c;
+            text-align: center;
+            margin-bottom: 8px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            text-shadow: 1px 1px 0 #fff;
+        }
+
+        .subhead {
+            text-align: center;
+            font-size: 1.2rem;
+            color: #2a4e6e;
+            margin-bottom: 25px;
+            font-weight: 500;
+            border-bottom: 2px dashed #b0c8dd;
+            padding-bottom: 15px;
+        }
+
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #1e3c5c;
+            color: white;
+            padding: 15px 25px;
+            border-radius: 60px;
+            margin-bottom: 25px;
+            box-shadow: 0 8px 16px -6px #0a1e2e;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .score-badge {
+            background: #ffb347;
+            color: #1e2b3a;
+            font-weight: 700;
+            padding: 8px 22px;
+            border-radius: 40px;
+            font-size: 1.3rem;
+            box-shadow: inset 0 -3px 0 #b16f1a;
+            letter-spacing: 0.5px;
+        }
+
+        .progress-text {
+            font-size: 1.1rem;
+            background: #2e577a;
+            padding: 6px 18px;
+            border-radius: 30px;
+            font-weight: 500;
+        }
+
+        .filter-bar {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 8px 22px;
+            border-radius: 40px;
+            border: 2px solid #3c6e9c;
+            background: white;
+            color: #1e3c5c;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+            font-size: 0.95rem;
+        }
+
+        .filter-btn.active {
+            background: #1e3c5c;
+            color: white;
+        }
+
+        .filter-btn:hover {
+            background: #d4e3f5;
+        }
+
+        .filter-btn.active:hover {
+            background: #2e577a;
+        }
+
+        .questions-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            margin-bottom: 30px;
+            max-height: 65vh;
+            overflow-y: auto;
+            padding-right: 8px;
+        }
+
+        .questions-grid::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .questions-grid::-webkit-scrollbar-track {
+            background: #e0eaf3;
+            border-radius: 10px;
+        }
+
+        .questions-grid::-webkit-scrollbar-thumb {
+            background: #3c6e9c;
+            border-radius: 10px;
+        }
+
+        .question-card {
+            background: #ffffff;
+            border-left: 8px solid #3c6e9c;
+            border-radius: 20px;
+            padding: 16px 20px;
+            box-shadow: 0 5px 12px #c0d0e0;
+            transition: 0.1s ease;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 12px 18px;
+        }
+
+        .question-card.correct-highlight {
+            border-left-color: #2e7d32;
+            background: #f0fff0;
+        }
+
+        .question-card.wrong-highlight {
+            border-left-color: #c62828;
+            background: #fff0f0;
+        }
+
+        .q-num {
+            background: #1e3c5c;
+            color: white;
+            width: 42px;
+            height: 42px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            font-weight: 700;
+            font-size: 1rem;
+            flex-shrink: 0;
+        }
+
+        .q-text {
+            flex: 1;
+            font-size: 1.08rem;
+            font-weight: 600;
+            color: #102b40;
+            min-width: 220px;
+        }
+
+        .subject-tag {
+            font-size: 0.75rem;
+            padding: 3px 12px;
+            border-radius: 20px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .subject-tag.science {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .subject-tag.maths {
+            background: #cce5ff;
+            color: #004085;
+        }
+
+        .options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px 18px;
+            align-items: center;
+        }
+
+        .option-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: #edf3f9;
+            padding: 6px 14px 6px 8px;
+            border-radius: 40px;
+            font-size: 1rem;
+            font-weight: 500;
+            color: #1b3a55;
+            cursor: pointer;
+            border: 1.5px solid transparent;
+            transition: 0.1s;
+        }
+
+        .option-item:hover {
+            background: #d4e3f5;
+            border-color: #7fa5c2;
+        }
+
+        .option-item input[type="radio"] {
+            appearance: none;
+            -webkit-appearance: none;
+            width: 18px;
+            height: 18px;
+            border: 2px solid #3c6e9c;
+            border-radius: 50%;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.1s;
+            cursor: pointer;
+        }
+
+        .option-item input[type="radio"]:checked {
+            background: #1e3c5c;
+            border-color: #1e3c5c;
+            box-shadow: inset 0 0 0 4px white;
+        }
+
+        .option-item.selected {
+            background: #cfe2f7;
+            border-color: #1e3c5c;
+        }
+
+        .explanation-box {
+            width: 100%;
+            margin-top: 10px;
+            padding: 12px 18px;
+            background: #eef6ff;
+            border-radius: 14px;
+            border-left: 6px solid #1e3c5c;
+            font-size: 0.96rem;
+            color: #153e5c;
+            line-height: 1.6;
+            display: none;
+        }
+
+        .explanation-box.show {
+            display: block;
+        }
+
+        .explanation-box strong {
+            color: #0f2a3f;
+        }
+
+        .btn-group {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 10px;
+        }
+
+        .btn {
+            border: none;
+            padding: 16px 38px;
+            font-size: 1.25rem;
+            font-weight: 700;
+            border-radius: 60px;
+            cursor: pointer;
+            transition: 0.2s;
+            box-shadow: 0 8px 0 #0f2a3f;
+            letter-spacing: 1px;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .btn-primary {
+            background: #ffb347;
+            color: #1e2b3a;
+            box-shadow: 0 8px 0 #b16f1a;
+        }
+
+        .btn-primary:hover {
+            background: #ffa21e;
+            transform: translateY(2px);
+            box-shadow: 0 6px 0 #b16f1a;
+        }
+
+        .btn-primary:active {
+            transform: translateY(6px);
+            box-shadow: 0 2px 0 #b16f1a;
+        }
+
+        .btn-secondary {
+            background: #e0eaf3;
+            color: #1e3c5c;
+            box-shadow: 0 8px 0 #a0b8cc;
+        }
+
+        .btn-secondary:hover {
+            background: #d0dfee;
+            transform: translateY(2px);
+            box-shadow: 0 6px 0 #a0b8cc;
+        }
+
+        .btn-secondary:active {
+            transform: translateY(6px);
+            box-shadow: 0 2px 0 #a0b8cc;
+        }
+
+        .result-panel {
+            background: #1e3c5c;
+            color: white;
+            border-radius: 32px;
+            padding: 30px 25px;
+            margin-top: 30px;
+            text-align: center;
+            box-shadow: inset 0 -5px 0 #0a1e2e, 0 15px 25px -5px #0a1e2e;
+        }
+
+        .result-panel h2 {
+            font-size: 2.2rem;
+            margin-bottom: 12px;
+            color: #ffd966;
+            text-shadow: 2px 2px 0 #0a1e2e;
+        }
+
+        .score-display {
+            font-size: 4rem;
+            font-weight: 800;
+            line-height: 1.2;
+            color: #ffffff;
+            margin: 10px 0;
+        }
+
+        .score-display small {
+            font-size: 2rem;
+            font-weight: 400;
+            color: #b8d0e5;
+        }
+
+        .result-message {
+            font-size: 1.6rem;
+            font-weight: 600;
+            background: #2e577a;
+            display: inline-block;
+            padding: 12px 40px;
+            border-radius: 50px;
+            margin: 20px 0 10px;
+            color: #ffecb3;
+        }
+
+        .section-breakdown {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .breakdown-item {
+            background: #2e577a;
+            padding: 10px 25px;
+            border-radius: 40px;
+            font-size: 1.1rem;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .kannada-note {
+            font-size: 0.9rem;
+            color: #4a6279;
+            text-align: right;
+            margin-top: 8px;
+            font-style: italic;
+        }
+
+        .pagination-info {
+            text-align: center;
+            font-size: 0.9rem;
+            color: #4a6279;
+            margin-bottom: 10px;
+        }
+
+        @media (max-width: 700px) {
+            .quiz-container {
+                padding: 20px 15px;
+            }
+            .question-card {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .q-text {
+                font-size: 1rem;
+            }
+            .btn {
+                padding: 14px 22px;
+                font-size: 1.1rem;
+            }
+            .score-display {
+                font-size: 3rem;
+            }
+            .top-bar {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="quiz-container" id="quizApp">
+        <h1>📘 ಎನ್‌ಎಂಎಂಎಸ್ 200 ಪ್ರಶ್ನೆಗಳು</h1>
+        <div class="subhead">ವಿಜ್ಞಾನ ಮತ್ತು ಗಣಿತ | ವಿವರಣೆ ಸಹಿತ</div>
+
+        <div class="top-bar">
+            <div class="progress-text" id="progressText">0 / 200 ಪ್ರಶ್ನೆಗಳಿಗೆ ಉತ್ತರಿಸಲಾಗಿದೆ</div>
+            <div class="score-badge" id="liveScore">ಅಂಕ: 0</div>
+        </div>
+
+        <div class="filter-bar">
+            <button class="filter-btn active" data-filter="all">ಎಲ್ಲಾ (200)</button>
+            <button class="filter-btn" data-filter="science">ವಿಜ್ಞಾನ (100)</button>
+            <button class="filter-btn" data-filter="maths">ಗಣಿತ (100)</button>
+        </div>
+
+        <div class="pagination-info" id="paginationInfo"></div>
+
+        <div class="questions-grid" id="questionsGrid"></div>
+
+        <div class="btn-group">
+            <button class="btn btn-primary" id="submitBtn"><i class="fas fa-check-circle"></i> ಫಲಿತಾಂಶ ಮತ್ತು ವಿವರಣೆ ನೋಡಿ</button>
+            <button class="btn btn-secondary" id="resetBtn"><i class="fas fa-redo-alt"></i> ಮರುಪ್ರಯತ್ನ</button>
+        </div>
+
+        <div class="result-panel hidden" id="resultPanel">
+            <h2>📊 ನಿಮ್ಮ ಫಲಿತಾಂಶ</h2>
+            <div class="score-display" id="finalScore">0<small>/200</small></div>
+            <div class="result-message" id="resultMessage">ಉತ್ತಮ ಪ್ರಯತ್ನ!</div>
+            <div class="section-breakdown" id="sectionBreakdown"></div>
+            <p style="margin-top: 20px; font-size: 1.1rem; opacity: 0.9;">ಎನ್‌ಎಂಎಂಎಸ್ ತಯಾರಿಗೆ ಶುಭಾಶಯಗಳು ✨</p>
+        </div>
+        <div class="kannada-note">* ಪ್ರತಿ ಪ್ರಶ್ನೆಗೆ ಒಂದು ಅಂಕ | ವಿವರಣೆಗಳು ಫಲಿತಾಂಶದ ನಂತರ ತೋರಿಸಲಾಗುತ್ತದೆ</div>
+    </div>
+
+    <script>
+        (function() {
+            // ============================================================
+            // 200 NMMS questions: 100 Science + 100 Maths
+            // Each: q, options, correct (index), explanation (Kannada),
+            // subject ('science' or 'maths')
+            // ============================================================
+            const questionsData = [
+                // =========================================================
+                // SCIENCE - 100 QUESTIONS (index 0-99)
+                // =========================================================
+                // 1-10
+                { q: "ಸಸ್ಯಗಳು ಆಹಾರ ತಯಾರಿಸುವ ಪ್ರಕ್ರಿಯೆಯ ಹೆಸರೇನು?", options: ["ಉಸಿರಾಟ", "ದ್ಯುತಿಸಂಶ್ಲೇಷಣೆ", "ಬಾಷ್ಪೀಕರಣ", "ಸಂಚಯನ"], correct: 1, subject: 'science', explanation: "ಸಸ್ಯಗಳು ಸೂರ್ಯನ ಬೆಳಕು, ನೀರು ಮತ್ತು ಕಾರ್ಬನ್ ಡೈಆಕ್ಸೈಡ್ ಬಳಸಿ ಆಹಾರ (ಗ್ಲೂಕೋಸ್) ತಯಾರಿಸುವ ಪ್ರಕ್ರಿಯೆಯನ್ನು ದ್ಯುತಿಸಂಶ್ಲೇಷಣೆ ಎನ್ನುತ್ತಾರೆ." },
+                { q: "ನೀರಿನ ರಾಸಾಯನಿಕ ಸೂತ್ರ ಯಾವುದು?", options: ["CO₂", "H₂O", "O₂", "NaCl"], correct: 1, subject: 'science', explanation: "ನೀರಿನ ಅಣುವಿನಲ್ಲಿ 2 ಹೈಡ್ರೋಜನ್ ಪರಮಾಣುಗಳು ಮತ್ತು 1 ಆಮ್ಲಜನಕ ಪರಮಾಣು ಇರುತ್ತದೆ. ಆದ್ದರಿಂದ ಸೂತ್ರ H₂O." },
+                { q: "ಸೂರ್ಯನಿಗೆ ಅತ್ಯಂತ ಸಮೀಪದ ಗ್ರಹ ಯಾವುದು?", options: ["ಶುಕ್ರ", "ಬುಧ", "ಮಂಗಳ", "ಗುರು"], correct: 1, subject: 'science', explanation: "ಸೂರ್ಯನಿಂದ ಅತ್ಯಂತ ಸಮೀಪದ ಗ್ರಹ ಬುಧ (Mercury). ಇದು ಸೂರ್ಯನಿಂದ ಸುಮಾರು 57.9 ಮಿಲಿಯನ್ ಕಿ.ಮೀ ದೂರದಲ್ಲಿದೆ." },
+                { q: "ಮಾನವ ದೇಹದಲ್ಲಿ ಎಷ್ಟು ಮೂಳೆಗಳಿವೆ? (ವಯಸ್ಕರಲ್ಲಿ)", options: ["206", "300", "150", "250"], correct: 0, subject: 'science', explanation: "ವಯಸ್ಕ ಮಾನವ ದೇಹದಲ್ಲಿ 206 ಮೂಳೆಗಳಿರುತ್ತವೆ. ಹುಟ್ಟುವಾಗ ಸುಮಾರು 300 ಮೂಳೆಗಳಿದ್ದು, ಬೆಳೆದಂತೆ ಕೆಲವು ಸೇರಿಕೊಳ್ಳುತ್ತವೆ." },
+                { q: "ಗಾಳಿಯಲ್ಲಿ ಆಮ್ಲಜನಕದ ಶೇಕಡಾವಾರು ಪ್ರಮಾಣ ಎಷ್ಟು?", options: ["21%", "78%", "0.04%", "50%"], correct: 0, subject: 'science', explanation: "ಗಾಳಿಯಲ್ಲಿ ಸಾರಜನಕ ~78%, ಆಮ್ಲಜನಕ ~21%, ಆರ್ಗಾನ್ ~0.9%, ಕಾರ್ಬನ್ ಡೈಆಕ್ಸೈಡ್ ~0.04% ಇರುತ್ತದೆ." },
+                { q: "ಬೆಳಕಿನ ವೇಗ ಎಷ್ಟು? (ನಿರ್ವಾತದಲ್ಲಿ)", options: ["3×10⁸ m/s", "3×10⁶ m/s", "3×10¹⁰ m/s", "3×10⁵ m/s"], correct: 0, subject: 'science', explanation: "ನಿರ್ವಾತದಲ್ಲಿ ಬೆಳಕಿನ ವೇಗ ಸುಮಾರು 3×10⁸ ಮೀಟರ್/ಸೆಕೆಂಡ್ (ಅಂದರೆ 3,00,000 ಕಿ.ಮೀ/ಸೆ)." },
+                { q: "ಜೀವಕೋಶದ ಶಕ್ತಿ ಕೇಂದ್ರ ಎಂದು ಯಾವುದನ್ನು ಕರೆಯುತ್ತಾರೆ?", options: ["ಕೋಶಕೇಂದ್ರ", "ಮೈಟೊಕಾಂಡ್ರಿಯ", "ರೈಬೋಸೋಮ್", "ಗಾಲ್ಗಿ"], correct: 1, subject: 'science', explanation: "ಮೈಟೊಕಾಂಡ್ರಿಯವು ಜೀವಕೋಶದ ಶಕ್ತಿ ಉತ್ಪಾದನಾ ಕೇಂದ್ರ. ಇದು ATP ರೂಪದಲ್ಲಿ ಶಕ್ತಿ ಉತ್ಪಾದಿಸುತ್ತದೆ." },
+                { q: "ಧ್ವನಿಯು ಯಾವ ಮಾಧ್ಯಮದಲ್ಲಿ ಚಲಿಸಲು ಸಾಧ್ಯವಿಲ್ಲ?", options: ["ಘನ", "ದ್ರವ", "ಅನಿಲ", "ನಿರ್ವಾತ"], correct: 3, subject: 'science', explanation: "ಧ್ವನಿ ಚಲಿಸಲು ಮಾಧ್ಯಮದ ಅಣುಗಳು ಬೇಕು. ನಿರ್ವಾತದಲ್ಲಿ ಅಣುಗಳಿಲ್ಲದ ಕಾರಣ ಧ್ವನಿ ಚಲಿಸಲು ಸಾಧ್ಯವಿಲ್ಲ." },
+                { q: "ನಮ್ಮ ದೇಹದಲ್ಲಿ ರಕ್ತ ಪರಿಚಲನೆ ಮಾಡುವ ಅಂಗ ಯಾವುದು?", options: ["ಹೃದಯ", "ಮೂತ್ರಪಿಂಡ", "ಯಕೃತ್ತು", "ಶ್ವಾಸಕೋಶ"], correct: 0, subject: 'science', explanation: "ಹೃದಯವು ರಕ್ತವನ್ನು ಪಂಪ್ ಮಾಡಿ ಇಡೀ ದೇಹದಲ್ಲಿ ಪರಿಚಲನೆ ಮಾಡುತ್ತದೆ." },
+                { q: "ಬಲ ಮತ್ತು ಚಲನೆಯ ನಿಯಮಗಳನ್ನು ಕಂಡುಹಿಡಿದವರು ಯಾರು?", options: ["ಐನ್‌ಸ್ಟೈನ್", "ನ್ಯೂಟನ್", "ಗೆಲಿಲಿಯೋ", "ಆರ್ಕಿಮಿಡೀಸ್"], correct: 1, subject: 'science', explanation: "ಸರ್ ಐಸಾಕ್ ನ್ಯೂಟನ್ ಮೂರು ಚಲನಾ ನಿಯಮಗಳನ್ನು ಪ್ರತಿಪಾದಿಸಿದರು." },
+                // 11-20 Science
+                { q: "ನೀರಿನ ಕುದಿಯುವ ಬಿಂದು (ಸಮುದ್ರ ಮಟ್ಟದಲ್ಲಿ) ಎಷ್ಟು?", options: ["0°C", "100°C", "50°C", "212°C"], correct: 1, subject: 'science', explanation: "ಸಮುದ್ರ ಮಟ್ಟದಲ್ಲಿ ನೀರು 100°C ನಲ್ಲಿ ಕುದಿಯುತ್ತದೆ." },
+                { q: "ಸಸ್ಯಗಳು ಯಾವ ಅನಿಲವನ್ನು ಹೀರಿಕೊಳ್ಳುತ್ತವೆ?", options: ["ಆಮ್ಲಜನಕ", "ಕಾರ್ಬನ್ ಡೈಆಕ್ಸೈಡ್", "ಸಾರಜನಕ", "ಹೈಡ್ರೋಜನ್"], correct: 1, subject: 'science', explanation: "ದ್ಯುತಿಸಂಶ್ಲೇಷಣೆಯಲ್ಲಿ ಸಸ್ಯಗಳು CO₂ ಹೀರಿಕೊಳ್ಳುತ್ತವೆ." },
+                { q: "ಮಾನವನ ರಕ್ತದ pH ಮೌಲ್ಯ ಎಷ್ಟು?", options: ["7.4", "5.6", "8.4", "6.0"], correct: 0, subject: 'science', explanation: "ಸಾಮಾನ್ಯ ಮಾನವ ರಕ್ತದ pH ಸುಮಾರು 7.4 (ಸ್ವಲ್ಪ ಕ್ಷಾರೀಯ)." },
+                { q: "ಬೆಳಕಿನ ವರ್ಣವಿಭಜನೆ ಮಾಡುವ ಸಾಧನ ಯಾವುದು?", options: ["ಮಸೂರ", "ಪ್ರಿಸ್ಮ್", "ಕನ್ನಡಿ", "ದರ್ಪಣ"], correct: 1, subject: 'science', explanation: "ಪ್ರಿಸ್ಮ್ ಬಿಳಿ ಬೆಳಕನ್ನು ಏಳು ಬಣ್ಣಗಳಾಗಿ ವಿಭಜಿಸುತ್ತದೆ." },
+                { q: "ಕೆಳಗಿನವುಗಳಲ್ಲಿ ಯಾವುದು ನವೀಕರಿಸಲಾಗದ ಶಕ್ತಿ ಮೂಲ?", options: ["ಸೂರ್ಯ", "ಗಾಳಿ", "ಕಲ್ಲಿದ್ದಲು", "ನೀರು"], correct: 2, subject: 'science', explanation: "ಕಲ್ಲಿದ್ದಲು ಪಳೆಯುಳಿಕೆ ಇಂಧನ, ಇದು ಮರುಪೂರಣವಾಗದ ಕಾರಣ ನವೀಕರಿಸಲಾಗದ ಶಕ್ತಿ ಮೂಲ." },
+                { q: "ಅಣುವಿನ ಕೇಂದ್ರದಲ್ಲಿ ಯಾವುದಿರುತ್ತದೆ?", options: ["ಎಲೆಕ್ಟ್ರಾನ್", "ಪ್ರೋಟಾನ್ ಮತ್ತು ನ್ಯೂಟ್ರಾನ್", "ಫೋಟಾನ್", "ಅಯಾನ್"], correct: 1, subject: 'science', explanation: "ಅಣುವಿನ ನ್ಯೂಕ್ಲಿಯಸ್‌ನಲ್ಲಿ ಪ್ರೋಟಾನ್ ಮತ್ತು ನ್ಯೂಟ್ರಾನ್ ಇರುತ್ತವೆ." },
+                { q: "ಸಾಮಾನ್ಯ ಉಷ್ಣತಾಮಾಪಕದಲ್ಲಿ ಯಾವ ದ್ರವ ಬಳಸುತ್ತಾರೆ?", options: ["ನೀರು", "ಪಾದರಸ", "ಆಲ್ಕೋಹಾಲ್", "ಎಣ್ಣೆ"], correct: 1, subject: 'science', explanation: "ಪಾದರಸವು ತಾಪಕ್ಕೆ ಅನುಗುಣವಾಗಿ ವಿಸ್ತರಿಸುವ ಕಾರಣ ಉಷ್ಣತಾಮಾಪಕದಲ್ಲಿ ಬಳಸುತ್ತಾರೆ." },
+                { q: "ಒಂದು ವಸ್ತುವಿನ ಸಾಂದ್ರತೆ = ?", options: ["ರಾಶಿ × ಘನಫಲ", "ರಾಶಿ / ಘನಫಲ", "ಘನಫಲ / ರಾಶಿ", "ರಾಶಿ + ಘನಫಲ"], correct: 1, subject: 'science', explanation: "ಸಾಂದ್ರತೆ = ರಾಶಿ / ಘನಫಲ (ρ = m/V)." },
+                { q: "ಮಾನವನಲ್ಲಿ ಎಷ್ಟು ಪ್ರಕಾರದ ಹಲ್ಲುಗಳಿವೆ?", options: ["2", "3", "4", "5"], correct: 2, subject: 'science', explanation: "ನಾಲ್ಕು ಪ್ರಕಾರ: ಬಾಚಿಹಲ್ಲು (incisors), ಕೋರೆಹಲ್ಲು (canines), ಮುಂಗಡಿಗಳು (premolars), ದವಡೆಹಲ್ಲು (molars)." },
+                { q: "ಸೌರಮಂಡಲದ ಅತಿದೊಡ್ಡ ಗ್ರಹ ಯಾವುದು?", options: ["ಭೂಮಿ", "ಗುರು", "ಶನಿ", "ನೆಪ್ಚೂನ್"], correct: 1, subject: 'science', explanation: "ಗುರು (Jupiter) ಅತಿದೊಡ್ಡ ಗ್ರಹ, ಇದರಲ್ಲಿ 1300 ಭೂಮಿಗಳು ಹಿಡಿಯಬಹುದು." },
+                // 21-30 Science
+                { q: "ವಾತಾವರಣದಲ್ಲಿ ಓಝೋನ್ ಪದರದ ಮುಖ್ಯ ಕಾರ್ಯ ಏನು?", options: ["ಆಮ್ಲಜನಕ ನೀಡುವುದು", "ಅತಿನೇರಳೆ ಕಿರಣಗಳನ್ನು ತಡೆಯುವುದು", "ಮಳೆ ತರುವುದು", "ಇಂಗಾಲದ ಡೈಆಕ್ಸೈಡ್ ಹೀರುವುದು"], correct: 1, subject: 'science', explanation: "ಓಝೋನ್ ಪದರವು ಸೂರ್ಯನಿಂದ ಬರುವ ಹಾನಿಕಾರಕ ಅತಿನೇರಳೆ (UV) ಕಿರಣಗಳನ್ನು ತಡೆಯುತ್ತದೆ." },
+                { q: "ಜೀವಿಗಳ ವರ್ಗೀಕರಣದಲ್ಲಿ ಮೊದಲನೇ ಹಂತ ಯಾವುದು?", options: ["ಜಾತಿ", "ಸಾಮ್ರಾಜ್ಯ", "ವರ್ಗ", "ಕುಟುಂಬ"], correct: 1, subject: 'science', explanation: "ವರ್ಗೀಕರಣದ ಶ್ರೇಣಿ: ಸಾಮ್ರಾಜ್ಯ (Kingdom) → ವಿಭಾಗ → ವರ್ಗ → ಗಣ → ಕುಟುಂಬ → ಜಾತಿ." },
+                { q: "ನ್ಯೂಕ್ಲಿಯಸ್‌ನಲ್ಲಿ ಯಾವ ಕಣಗಳಿವೆ?", options: ["ಎಲೆಕ್ಟ್ರಾನ್ ಮತ್ತು ಪ್ರೋಟಾನ್", "ಪ್ರೋಟಾನ್ ಮತ್ತು ನ್ಯೂಟ್ರಾನ್", "ಎಲೆಕ್ಟ್ರಾನ್ ಮತ್ತು ನ್ಯೂಟ್ರಾನ್", "ಫೋಟಾನ್"], correct: 1, subject: 'science', explanation: "ನ್ಯೂಕ್ಲಿಯಸ್‌ನಲ್ಲಿ ಪ್ರೋಟಾನ್ (ಧನ) ಮತ್ತು ನ್ಯೂಟ್ರಾನ್ (ತಟಸ್ಥ) ಇರುತ್ತವೆ." },
+                { q: "ಮಾನವನಲ್ಲಿ ಎಷ್ಟು ವರ್ಣತಂತುಗಳಿವೆ?", options: ["23", "46", "44", "22"], correct: 1, subject: 'science', explanation: "ಮಾನವನ ದೇಹಕೋಶದಲ್ಲಿ 46 ವರ್ಣತಂತುಗಳು (23 ಜೋಡಿ)." },
+                { q: "ಬಲದ SI ಏಕಮಾನ ಯಾವುದು?", options: ["ಜೂಲ್", "ನ್ಯೂಟನ್", "ವಾಟ್", "ಪ್ಯಾಸ್ಕಲ್"], correct: 1, subject: 'science', explanation: "ಬಲದ SI ಏಕಮಾನ ನ್ಯೂಟನ್ (N). 1 N = 1 kg·m/s²." },
+                { q: "ಸಸ್ಯಗಳಲ್ಲಿ ನೀರು ಮತ್ತು ಖನಿಜಗಳ ಸಾಗಣೆ ಮಾಡುವ ಅಂಗಾಂಶ ಯಾವುದು?", options: ["ಜೈಲಂ", "ಫ್ಲೋಯಂ", "ಎಪಿಡರ್ಮಿಸ್", "ಕಾರ್ಟೆಕ್ಸ್"], correct: 0, subject: 'science', explanation: "ಜೈಲಂ (Xylem) ನೀರು ಮತ್ತು ಖನಿಜಗಳನ್ನು ಬೇರಿನಿಂದ ಎಲೆಗಳಿಗೆ ಸಾಗಿಸುತ್ತದೆ." },
+                { q: "ಮಳೆಬಿಲ್ಲಿನಲ್ಲಿ ಎಷ್ಟು ಬಣ್ಣಗಳಿವೆ?", options: ["5", "6", "7", "8"], correct: 2, subject: 'science', explanation: "ಮಳೆಬಿಲ್ಲಿನಲ್ಲಿ 7 ಬಣ್ಣಗಳು: ಕೆಂಪು, ಕಿತ್ತಳೆ, ಹಳದಿ, ಹಸಿರು, ನೀಲಿ, ನೇರಳೆ, ಬಿಳಿ." },
+                { q: "ಚಂದ್ರನ ಮೇಲೆ ಮೊದಲು ಕಾಲಿಟ್ಟವರು ಯಾರು?", options: ["ನೀಲ್ ಆರ್ಮ್‌ಸ್ಟ್ರಾಂಗ್", "ಬಜ್ ಆಲ್ಡ್ರಿನ್", "ಯೂರಿ ಗಾಗರಿನ್", "ಮೈಕೆಲ್ ಕಾಲಿನ್ಸ್"], correct: 0, subject: 'science', explanation: "1969 ಜುಲೈ 20 ರಂದು ನೀಲ್ ಆರ್ಮ್‌ಸ್ಟ್ರಾಂಗ್ ಚಂದ್ರನ ಮೇಲೆ ಮೊದಲ ಹೆಜ್ಜೆ ಇಟ್ಟರು." },
+                { q: "ಬೆಳಕಿನ ವಕ್ರೀಭವನದ ನಿಯಮ ಯಾವುದು?", options: ["ಸ್ನೆಲ್ ನಿಯಮ", "ನ್ಯೂಟನ್ ನಿಯಮ", "ಓಮ್ ನಿಯಮ", "ಫ್ಯಾರಡೆ ನಿಯಮ"], correct: 0, subject: 'science', explanation: "ಸ್ನೆಲ್ ನಿಯಮ: sin i / sin r = ಸ್ಥಿರಾಂಕ (ವಕ್ರೀಭವನ ಸೂಚ್ಯಂಕ)." },
+                { q: "ಒಂದು ವಸ್ತುವಿನ ತೂಕ = ?", options: ["ರಾಶಿ × ಗುರುತ್ವ", "ರಾಶಿ / ಗುರುತ್ವ", "ಗುರುತ್ವ / ರಾಶಿ", "ರಾಶಿ + ಗುರುತ್ವ"], correct: 0, subject: 'science', explanation: "ತೂಕ = ರಾಶಿ × ಗುರುತ್ವಾಕರ್ಷಣೆಯಿಂದ ಉಂಟಾಗುವ ವೇಗೋತ್ಕರ್ಷ (W = mg)." },
+                // 31-40 Science
+                { q: "ರಕ್ತದಲ್ಲಿನ ಸಕ್ಕರೆ ಮಟ್ಟವನ್ನು ನಿಯಂತ್ರಿಸುವ ಹಾರ್ಮೋನ್ ಯಾವುದು?", options: ["ಇನ್ಸುಲಿನ್", "ಥೈರಾಕ್ಸಿನ್", "ಅಡ್ರಿನಾಲಿನ್", "ಈಸ್ಟ್ರೋಜನ್"], correct: 0, subject: 'science', explanation: "ಇನ್ಸುಲಿನ್ ಹಾರ್ಮೋನ್ ರಕ್ತದ ಸಕ್ಕರೆಯನ್ನು ನಿಯಂತ್ರಿಸುತ್ತದೆ. ಕೊರತೆಯಿಂದ ಮಧುಮೇಹ." },
+                { q: "ಸಸ್ಯಗಳಲ್ಲಿ ಆಹಾರ ಸಂಗ್ರಹಿಸುವ ಅಂಗ ಯಾವುದು?", options: ["ಬೇರು", "ಕಾಂಡ", "ಎಲೆ", "ಹೂ"], correct: 0, subject: 'science', explanation: "ಕೆಲವು ಸಸ್ಯಗಳ ಬೇರುಗಳು (ಉದಾ: ಗೆಣಸು, ಆಲೂಗಡ್ಡೆ) ಆಹಾರ ಸಂಗ್ರಹಿಸುತ್ತವೆ." },
+                { q: "ನೀರಿನಲ್ಲಿ ಕರಗುವ ವಿಟಮಿನ್ ಯಾವುದು?", options: ["ವಿಟಮಿನ್ A", "ವಿಟಮಿನ್ C", "ವಿಟಮಿನ್ D", "ವಿಟಮಿನ್ K"], correct: 1, subject: 'science', explanation: "ವಿಟಮಿನ್ C ಮತ್ತು B ಸಮೂಹ ವಿಟಮಿನ್‌ಗಳು ನೀರಿನಲ್ಲಿ ಕರಗುತ್ತವೆ." },
+                { q: "ಧ್ವನಿಯ ತೀವ್ರತೆಯ ಏಕಮಾನ?", options: ["ಡೆಸಿಬೆಲ್", "ಹರ್ಟ್ಝ್", "ನ್ಯೂಟನ್", "ಜೂಲ್"], correct: 0, subject: 'science', explanation: "ಧ್ವನಿಯ ತೀವ್ರತೆಯನ್ನು ಡೆಸಿಬೆಲ್ (dB) ನಲ್ಲಿ ಅಳೆಯುತ್ತಾರೆ." },
+                { q: "ಭೂಮಿಯ ವಾತಾವರಣದಲ್ಲಿ ಅತ್ಯಂತ ಹೆಚ್ಚಿರುವ ಅನಿಲ?", options: ["ಆಮ್ಲಜನಕ", "ಸಾರಜನಕ", "ಕಾರ್ಬನ್ ಡೈಆಕ್ಸೈಡ್", "ಆರ್ಗಾನ್"], correct: 1, subject: 'science', explanation: "ಸಾರಜನಕ (Nitrogen) ~78% ಪ್ರಮಾಣದಲ್ಲಿ ಇದೆ." },
+                { q: "ಮಾನವನ ಉಸಿರಾಟದ ಅಂಗ ಯಾವುದು?", options: ["ಹೃದಯ", "ಶ್ವಾಸಕೋಶ", "ಮೂತ್ರಪಿಂಡ", "ಯಕೃತ್ತು"], correct: 1, subject: 'science', explanation: "ಶ್ವಾಸಕೋಶವು ಆಮ್ಲಜನಕವನ್ನು ತೆಗೆದುಕೊಂಡು CO₂ ಬಿಡುಗಡೆ ಮಾಡುತ್ತದೆ." },
+                { q: "ಸೂರ್ಯನಿಂದ ಭೂಮಿಗೆ ಬರುವ ಶಕ್ತಿಯ ಮೂಲ ಯಾವುದು?", options: ["ಬೆಳಕು", "ಶಾಖ", "ಬೆಳಕು ಮತ್ತು ಶಾಖ", "ಧ್ವನಿ"], correct: 2, subject: 'science', explanation: "ಸೂರ್ಯನು ಬೆಳಕು ಮತ್ತು ಶಾಖ ಎರಡೂ ರೂಪದಲ್ಲಿ ಶಕ್ತಿ ನೀಡುತ್ತಾನೆ." },
+                { q: "ಬ್ಯಾಕ್ಟೀರಿಯಾ ಯಾವ ರೀತಿಯ ಜೀವಿ?", options: ["ಬಹುಕೋಶೀಯ", "ಏಕಕೋಶೀಯ", "ಯಾವುದೂ ಅಲ್ಲ", "ಸಸ್ಯ"], correct: 1, subject: 'science', explanation: "ಬ್ಯಾಕ್ಟೀರಿಯಾ ಏಕಕೋಶೀಯ ಜೀವಿಗಳು, ಸೂಕ್ಷ್ಮದರ್ಶಕದಲ್ಲಿ ಮಾತ್ರ ಕಾಣುತ್ತವೆ." },
+                { q: "ಗುರುತ್ವಾಕರ್ಷಣೆಯಿಂದ ವಸ್ತುಗಳು ಯಾವ ದಿಕ್ಕಿಗೆ ಬೀಳುತ್ತವೆ?", options: ["ಮೇಲಕ್ಕೆ", "ಕೆಳಕ್ಕೆ", "ಎಡಕ್ಕೆ", "ಬಲಕ್ಕೆ"], correct: 1, subject: 'science', explanation: "ಭೂಮಿಯ ಗುರುತ್ವಾಕರ್ಷಣೆ ವಸ್ತುಗಳನ್ನು ಕೆಳಕ್ಕೆ ಎಳೆಯುತ್ತದೆ." },
+                { q: "ನಮ್ಮ ದೇಹದಲ್ಲಿ ಅತ್ಯಂತ ದೊಡ್ಡ ಅಂಗ ಯಾವುದು?", options: ["ಚರ್ಮ", "ಯಕೃತ್ತು", "ಮೆದುಳು", "ಹೃದಯ"], correct: 0, subject: 'science', explanation: "ಚರ್ಮವು ದೇಹದ ಅತಿದೊಡ್ಡ ಅಂಗ, ಇದು ರಕ್ಷಣೆ ಮತ್ತು ಉಷ್ಣತೆ ನಿಯಂತ್ರಿಸುತ್ತದೆ." },
+                // 41-50 Science
+                { q: "ಸಸ್ಯಗಳಲ್ಲಿ ದ್ಯುತಿಸಂಶ್ಲೇಷಣೆ ನಡೆಯುವ ಅಂಗಾಂಶ?", options: ["ಪತ್ರಹರಿತ್ತು", "ಜೈಲಂ", "ಫ್ಲೋಯಂ", "ಎಪಿಡರ್ಮಿಸ್"], correct: 0, subject: 'science', explanation: "ಪತ್ರಹರಿತ್ತು (Chloroplast) ನಲ್ಲಿ ಹಸಿರು ವರ್ಣದ್ರವ್ಯ ಕ್ಲೋರೊಫಿಲ್ ಇದ್ದು ದ್ಯುತಿಸಂಶ್ಲೇಷಣೆ ನಡೆಯುತ್ತದೆ." },
+                { q: "ಆವರ್ತಕ ಕೋಷ್ಟಕದಲ್ಲಿ ಮೊದಲನೇ ಧಾತು ಯಾವುದು?", options: ["ಹೈಡ್ರೋಜನ್", "ಹೀಲಿಯಂ", "ಆಮ್ಲಜನಕ", "ಇಂಗಾಲ"], correct: 0, subject: 'science', explanation: "ಆವರ್ತಕ ಕೋಷ್ಟಕದಲ್ಲಿ ಮೊದಲನೇ ಧಾತು ಹೈಡ್ರೋಜನ್ (H), ಪರಮಾಣು ಸಂಖ್ಯೆ 1." },
+                { q: "ಮಾನವನ ಹೃದಯದಲ್ಲಿ ಎಷ್ಟು ಕೋಣೆಗಳಿವೆ?", options: ["2", "3", "4", "5"], correct: 2, subject: 'science', explanation: "ಮಾನವ ಹೃದಯದಲ್ಲಿ 4 ಕೋಣೆಗಳು: 2 ಆಲಿಂಡ್ರಿಕಲ್ಸ್ (atria), 2 ವೆಂಟ್ರಿಕಲ್ಸ್." },
+                { q: "ಸೌರಶಕ್ತಿಯನ್ನು ವಿದ್ಯುತ್ ಆಗಿ ಪರಿವರ್ತಿಸುವ ಸಾಧನ?", options: ["ಸೋಲಾರ್ ಸೆಲ್", "ಜನರೇಟರ್", "ಬ್ಯಾಟರಿ", "ಮೋಟಾರ್"], correct: 0, subject: 'science', explanation: "ಸೋಲಾರ್ ಸೆಲ್ (PV cell) ಸೂರ್ಯನ ಬೆಳಕನ್ನು ನೇರವಾಗಿ ವಿದ್ಯುತ್ ಆಗಿ ಪರಿವರ್ತಿಸುತ್ತದೆ." },
+                { q: "ಧ್ವನಿಯು ಗಾಳಿಯಲ್ಲಿ ಚಲಿಸುವ ವೇಗ (ಸುಮಾರು)?", options: ["343 m/s", "3×10⁸ m/s", "1500 m/s", "30 m/s"], correct: 0, subject: 'science', explanation: "ಗಾಳಿಯಲ್ಲಿ ಧ್ವನಿಯ ವೇಗ ಸುಮಾರು 343 ಮೀ/ಸೆ (20°C ನಲ್ಲಿ)." },
+                { q: "ನಮ್ಮ ಮೆದುಳಿನ ಯಾವ ಭಾಗವು ಸಮತೋಲನವನ್ನು ನಿಯಂತ್ರಿಸುತ್ತದೆ?", options: ["ಸೆರೆಬ್ರಮ್", "ಸೆರೆಬೆಲ್ಲಮ್", "ಮೆಡುಲ್ಲಾ", "ಥಾಲಮಸ್"], correct: 1, subject: 'science', explanation: "ಸೆರೆಬೆಲ್ಲಮ್ (ಹಿಂದಿನ ಮೆದುಳು) ಸಮತೋಲನ ಮತ್ತು ಸ್ನಾಯು ಸಮನ್ವಯವನ್ನು ನಿಯಂತ್ರಿಸುತ್ತದೆ." },
+                { q: "ಬೆಳಕಿನ ಪ್ರತಿಫಲನದ ನಿಯಮ: ಪತನ ಕೋನ = ?", options: ["ಪ್ರತಿಫಲನ ಕೋನ", "ವಕ್ರೀಭವನ ಕೋನ", "90°", "0°"], correct: 0, subject: 'science', explanation: "ಪ್ರತಿಫಲನ ನಿಯಮದ ಪ್ರಕಾರ ಪತನ ಕೋನ = ಪ್ರತಿಫಲನ ಕೋನ." },
+                { q: "ಒಂದು ಜೀವಿಯ ವೈಜ್ಞಾನಿಕ ಹೆಸರು ಯಾವ ಭಾಷೆಯಲ್ಲಿರುತ್ತದೆ?", options: ["ಇಂಗ್ಲಿಷ್", "ಲ್ಯಾಟಿನ್", "ಗ್ರೀಕ್", "ಸಂಸ್ಕೃತ"], correct: 1, subject: 'science', explanation: "ಜೀವಿಗಳ ವೈಜ್ಞಾನಿಕ ನಾಮಕರಣ ಲ್ಯಾಟಿನ್ ಭಾಷೆಯಲ್ಲಿ ಮಾಡಲಾಗುತ್ತದೆ (ದ್ವಿನಾಮ ಪದ್ಧತಿ)." },
+                { q: "ವಿಟಮಿನ್ C ಕೊರತೆಯಿಂದ ಯಾವ ರೋಗ ಬರುತ್ತದೆ?", options: ["ಸ್ಕರ್ವಿ", "ರಿಕೆಟ್ಸ್", "ಬೆರಿಬೆರಿ", "ರಕ್ತಹೀನತೆ"], correct: 0, subject: 'science', explanation: "ವಿಟಮಿನ್ C ಕೊರತೆಯಿಂದ ಸ್ಕರ್ವಿ ರೋಗ ಬರುತ್ತದೆ (ಒಸಡುಗಳಿಂದ ರಕ್ತ ಸ್ರಾವ)." },
+                { q: "ಭೂಮಿಯಿಂದ ಸೂರ್ಯನಿಗೆ ಇರುವ ಸರಾಸರಿ ದೂರ?", options: ["150 ದಶಲಕ್ಷ ಕಿ.ಮೀ", "1 ದಶಲಕ್ಷ ಕಿ.ಮೀ", "15 ದಶಲಕ್ಷ ಕಿ.ಮೀ", "1.5 ಶತಕೋಟಿ ಕಿ.ಮೀ"], correct: 0, subject: 'science', explanation: "ಸೂರ್ಯ ಮತ್ತು ಭೂಮಿಯ ನಡುವಿನ ಸರಾಸರಿ ದೂರ ಸುಮಾರು 150 ದಶಲಕ್ಷ (15 ಕೋಟಿ) ಕಿ.ಮೀ = 1 ಖಗೋಳ ಏಕಮಾನ (AU)." },
+                // 51-60 Science
+                { q: "ರಕ್ತದಲ್ಲಿ ಆಮ್ಲಜನಕ ಸಾಗಿಸುವ ಅಂಶ ಯಾವುದು?", options: ["ಶ್ವೇತ ರಕ್ತಕಣ", "ಹಿಮೋಗ್ಲೋಬಿನ್", "ಪ್ಲಾಸ್ಮಾ", "ಪ್ಲೇಟ್ಲೆಟ್"], correct: 1, subject: 'science', explanation: "ಹಿಮೋಗ್ಲೋಬಿನ್ ಎಂಬ ಪ್ರೋಟೀನ್ ರಕ್ತದಲ್ಲಿ ಆಮ್ಲಜನಕವನ್ನು ಸಾಗಿಸುತ್ತದೆ." },
+                { q: "ಸಸ್ಯಗಳಲ್ಲಿ ಆಹಾರ ಸಾಗಿಸುವ ಅಂಗಾಂಶ?", options: ["ಜೈಲಂ", "ಫ್ಲೋಯಂ", "ಎಪಿಡರ್ಮಿಸ್", "ಕಾರ್ಟೆಕ್ಸ್"], correct: 1, subject: 'science', explanation: "ಫ್ಲೋಯಂ (Phloem) ಎಲೆಗಳಲ್ಲಿ ತಯಾರಾದ ಆಹಾರವನ್ನು ಸಸ್ಯದ ಎಲ್ಲಾ ಭಾಗಗಳಿಗೆ ಸಾಗಿಸುತ್ತದೆ." },
+                { q: "ಅತ್ಯಂತ ಕಠಿಣವಾದ ನೈಸರ್ಗಿಕ ವಸ್ತು ಯಾವುದು?", options: ["ಕಬ್ಬಿಣ", "ವಜ್ರ", "ಗ್ರ್ಯಾಫೈಟ್", "ಬಂಗಾರ"], correct: 1, subject: 'science', explanation: "ವಜ್ರವು ಅತ್ಯಂತ ಕಠಿಣವಾದ ನೈಸರ್ಗಿಕ ವಸ್ತು (ಮೋಹ್ಸ್ ಸ್ಕೇಲ್‌ನಲ್ಲಿ 10)." },
+                { q: "ಮಾನವನಲ್ಲಿ ಎಷ್ಟು ಜ್ಞಾನೇಂದ್ರಿಯಗಳಿವೆ?", options: ["3", "4", "5", "6"], correct: 2, subject: 'science', explanation: "5 ಜ್ಞಾನೇಂದ್ರಿಯಗಳು: ಕಣ್ಣು, ಕಿವಿ, ಮೂಗು, ನಾಲಿಗೆ, ಚರ್ಮ." },
+                { q: "ನೀರಿನಲ್ಲಿ ಮುಳುಗಿದ ವಸ್ತುವಿನ ಮೇಲೆ ಕಾರ್ಯನಿರ್ವಹಿಸುವ ಬಲ?", options: ["ಗುರುತ್ವ", "ಉತ್ಪ್ಲಾವಕ ಬಲ", "ಘರ್ಷಣೆ", "ಸ್ಥಿತಿಸ್ಥಾಪಕ ಬಲ"], correct: 1, subject: 'science', explanation: "ಉತ್ಪ್ಲಾವಕ ಬಲ (Buoyant force) ದ್ರವದಲ್ಲಿ ಮುಳುಗಿದ ವಸ್ತುವನ್ನು ಮೇಲಕ್ಕೆ ತಳ್ಳುತ್ತದೆ (ಆರ್ಕಿಮಿಡೀಸ್ ತತ್ವ)." },
+                { q: "ಚಂದ್ರನ ಮೇಲೆ ಗುರುತ್ವಾಕರ್ಷಣೆ ಭೂಮಿಗಿಂತ ಎಷ್ಟು ಪಟ್ಟು ಕಡಿಮೆ?", options: ["1/2", "1/6", "1/4", "1/8"], correct: 1, subject: 'science', explanation: "ಚಂದ್ರನ ಗುರುತ್ವ ಭೂಮಿಯ ಸುಮಾರು 1/6 ರಷ್ಟು. ಅಂದರೆ 60 ಕೆ.ಜಿ ವ್ಯಕ್ತಿ ಚಂದ್ರನಲ್ಲಿ 10 ಕೆ.ಜಿ ತೂಗುತ್ತಾನೆ." },
+                { q: "ಆಮ್ಲ ಮಳೆಗೆ ಮುಖ್ಯ ಕಾರಣ ಯಾವುದು?", options: ["CO₂", "SO₂ ಮತ್ತು NO₂", "O₂", "N₂"], correct: 1, subject: 'science', explanation: "ಸಲ್ಫರ್ ಡೈಆಕ್ಸೈಡ್ (SO₂) ಮತ್ತು ನೈಟ್ರೋಜನ್ ಡೈಆಕ್ಸೈಡ್ (NO₂) ಗಾಳಿಯಲ್ಲಿ ನೀರಿನೊಂದಿಗೆ ಸೇರಿ ಆಮ್ಲ ಮಳೆ ಉಂಟುಮಾಡುತ್ತವೆ." },
+                { q: "DNA ಯ ಪೂರ್ಣ ರೂಪ ಏನು?", options: ["Deoxyribonucleic Acid", "Dinucleic Acid", "Deoxyribose Acid", "Dinitrogen Acid"], correct: 0, subject: 'science', explanation: "DNA = Deoxyribonucleic Acid. ಇದು ಆನುವಂಶಿಕ ಮಾಹಿತಿಯನ್ನು ಸಾಗಿಸುತ್ತದೆ." },
+                { q: "ವಿದ್ಯುತ್ ಪ್ರವಾಹದ SI ಏಕಮಾನ?", options: ["ವೋಲ್ಟ್", "ಆಂಪಿಯರ್", "ಓಮ್", "ವಾಟ್"], correct: 1, subject: 'science', explanation: "ವಿದ್ಯುತ್ ಪ್ರವಾಹದ SI ಏಕಮಾನ ಆಂಪಿಯರ್ (A)." },
+                { q: "ಸೂರ್ಯನ ಶಕ್ತಿಯ ಮೂಲ ಯಾವುದು?", options: ["ಉರಿಯುವ ಅನಿಲ", "ಪರಮಾಣು ಸಮ್ಮಿಳನ", "ಪರಮಾಣು ವಿಭಜನ", "ರಾಸಾಯನಿಕ ಕ್ರಿಯೆ"], correct: 1, subject: 'science', explanation: "ಸೂರ್ಯನಲ್ಲಿ ಹೈಡ್ರೋಜನ್ ಪರಮಾಣುಗಳ ಸಮ್ಮಿಳನದಿಂದ ಹೀಲಿಯಂ ಉತ್ಪತ್ತಿಯಾಗಿ ಬೃಹತ್ ಶಕ್ತಿ ಬಿಡುಗಡೆಯಾಗುತ್ತದೆ." },
+                // 61-70 Science
+                { q: "ಒಂದು ವಸ್ತುವಿನ ವೇಗ = ?", options: ["ದೂರ × ಕಾಲ", "ದೂರ / ಕಾಲ", "ಕಾಲ / ದೂರ", "ದೂರ + ಕಾಲ"], correct: 1, subject: 'science', explanation: "ವೇಗ = ದೂರ / ಕಾಲ (v = d/t)." },
+                { q: "ಮನುಷ್ಯನಲ್ಲಿ ಎಷ್ಟು ಸ್ನಾಯುಗಳಿವೆ?", options: ["206", "600 ಕ್ಕಿಂತ ಹೆಚ್ಚು", "300", "150"], correct: 1, subject: 'science', explanation: "ಮಾನವ ದೇಹದಲ್ಲಿ 600 ಕ್ಕಿಂತ ಹೆಚ್ಚು ಸ್ನಾಯುಗಳಿವೆ." },
+                { q: "ಗ್ರೀನ್ ಹೌಸ್ ಅನಿಲ ಯಾವುದು?", options: ["O₂", "CO₂", "N₂", "H₂"], correct: 1, subject: 'science', explanation: "ಕಾರ್ಬನ್ ಡೈಆಕ್ಸೈಡ್ (CO₂) ಪ್ರಮುಖ ಗ್ರೀನ್ ಹೌಸ್ ಅನಿಲ, ಇದು ಜಾಗತಿಕ ತಾಪಮಾನ ಏರಿಕೆಗೆ ಕಾರಣ." },
+                { q: "ಬೆಳಕಿನ ಏಳು ಬಣ್ಣಗಳನ್ನು ಒಟ್ಟಿಗೆ ಸೇರಿಸಿದಾಗ ಯಾವ ಬಣ್ಣ ಬರುತ್ತದೆ?", options: ["ಕಪ್ಪು", "ಬಿಳಿ", "ಕೆಂಪು", "ನೀಲಿ"], correct: 1, subject: 'science', explanation: "ಏಳು ಬಣ್ಣಗಳನ್ನು ಸೇರಿಸಿದಾಗ ಬಿಳಿ ಬೆಳಕು ಉಂಟಾಗುತ್ತದೆ (ನ್ಯೂಟನ್ ರಿಂಗ್ ಪ್ರಯೋಗ)." },
+                { q: "ಅತಿ ಸಣ್ಣ ಜೀವಿ ಯಾವುದು?", options: ["ಬ್ಯಾಕ್ಟೀರಿಯಾ", "ವೈರಸ್", "ಫಂಗಸ್", "ಪ್ರೋಟೋಜೋವಾ"], correct: 1, subject: 'science', explanation: "ವೈರಸ್ ಅತಿ ಸಣ್ಣ ಜೀವಿ, ಇದನ್ನು ಎಲೆಕ್ಟ್ರಾನ್ ಸೂಕ್ಷ್ಮದರ್ಶಕದಲ್ಲಿ ಮಾತ್ರ ನೋಡಬಹುದು." },
+                { q: "ನ್ಯೂಟನ್‌ನ ಮೂರನೇ ನಿಯಮ ಯಾವುದು?", options: ["ಜಡತ್ವ ನಿಯಮ", "ಬಲ = ರಾಶಿ × ವೇಗೋತ್ಕರ್ಷ", "ಪ್ರತಿ ಕ್ರಿಯೆಗೆ ಸಮಾನ ಮತ್ತು ವಿರುದ್ಧ ಪ್ರತಿಕ್ರಿಯೆ", "ಶಕ್ತಿ ಸಂರಕ್ಷಣೆ"], correct: 2, subject: 'science', explanation: "ನ್ಯೂಟನ್‌ನ ಮೂರನೇ ನಿಯಮ: ಪ್ರತಿ ಕ್ರಿಯೆಗೆ ಸಮಾನ ಮತ್ತು ವಿರುದ್ಧ ದಿಕ್ಕಿನ ಪ್ರತಿಕ್ರಿಯೆ ಇರುತ್ತದೆ." },
+                { q: "ಮಾನವನ ಚರ್ಮದಲ್ಲಿ ಯಾವ ವಿಟಮಿನ್ ಸೂರ್ಯನ ಬೆಳಕಿನಿಂದ ಉತ್ಪತ್ತಿಯಾಗುತ್ತದೆ?", options: ["ವಿಟಮಿನ್ A", "ವಿಟಮಿನ್ B", "ವಿಟಮಿನ್ C", "ವಿಟಮಿನ್ D"], correct: 3, subject: 'science', explanation: "ಸೂರ್ಯನ ಬೆಳಕಿನ UV ಕಿರಣಗಳಿಂದ ಚರ್ಮದಲ್ಲಿ ವಿಟಮಿನ್ D ಉತ್ಪತ್ತಿಯಾಗುತ್ತದೆ." },
+                { q: "ಅತ್ಯಂತ ಹಗುರವಾದ ಧಾತು ಯಾವುದು?", options: ["ಹೈಡ್ರೋಜನ್", "ಹೀಲಿಯಂ", "ಲಿಥಿಯಂ", "ಆಮ್ಲಜನಕ"], correct: 0, subject: 'science', explanation: "ಹೈಡ್ರೋಜನ್ ಅತ್ಯಂತ ಹಗುರವಾದ ಧಾತು (ಪರಮಾಣು ಸಂಖ್ಯೆ 1)." },
+                { q: "ಸಸ್ಯಗಳಿಗೆ ಹಸಿರು ಬಣ್ಣ ನೀಡುವ ವರ್ಣದ್ರವ್ಯ?", options: ["ಕ್ಯಾರೋಟಿನ್", "ಕ್ಲೋರೊಫಿಲ್", "ಆಂಥೋಸಯನಿನ್", "ಕ್ಸ್ಯಾಂಥೋಫಿಲ್"], correct: 1, subject: 'science', explanation: "ಕ್ಲೋರೊಫಿಲ್ ವರ್ಣದ್ರವ್ಯ ಸಸ್ಯಗಳಿಗೆ ಹಸಿರು ಬಣ್ಣ ನೀಡುತ್ತದೆ ಮತ್ತು ದ್ಯುತಿಸಂಶ್ಲೇಷಣೆಯಲ್ಲಿ ಸಹಾಯ ಮಾಡುತ್ತದೆ." },
+                { q: "ಮಾನವನ ಮೆದುಳಿನ ತೂಕ ಸುಮಾರು ಎಷ್ಟು?", options: ["500 ಗ್ರಾಂ", "1.4 ಕೆ.ಜಿ", "2.5 ಕೆ.ಜಿ", "800 ಗ್ರಾಂ"], correct: 1, subject: 'science', explanation: "ವಯಸ್ಕ ಮಾನವನ ಮೆದುಳಿನ ತೂಕ ಸುಮಾರು 1.4 ಕೆ.ಜಿ (1400 ಗ್ರಾಂ)." },
+                // 71-80 Science
+                { q: "ಸೌರಮಂಡಲದಲ್ಲಿ ಎಷ್ಟು ಗ್ರಹಗಳಿವೆ?", options: ["7", "8", "9", "10"], correct: 1, subject: 'science', explanation: "ಸೌರಮಂಡಲದಲ್ಲಿ 8 ಗ್ರಹಗಳಿವೆ (2006 ರಲ್ಲಿ ಪ್ಲುಟೋ ಕೈಬಿಡಲಾಯಿತು)." },
+                { q: "ಭೂಮಿಯ ಉಪಗ್ರಹ ಯಾವುದು?", options: ["ಸೂರ್ಯ", "ಚಂದ್ರ", "ಮಂಗಳ", "ಶುಕ್ರ"], correct: 1, subject: 'science', explanation: "ಚಂದ್ರ ಭೂಮಿಯ ಏಕೈಕ ನೈಸರ್ಗಿಕ ಉಪಗ್ರಹ." },
+                { q: "ಬೆಳಕಿನ ವೇಗವು ಯಾವ ಮಾಧ್ಯಮದಲ್ಲಿ ಅತಿ ಹೆಚ್ಚು?", options: ["ಗಾಳಿ", "ನೀರು", "ನಿರ್ವಾತ", "ಗಾಜು"], correct: 2, subject: 'science', explanation: "ಬೆಳಕಿನ ವೇಗ ನಿರ್ವಾತದಲ್ಲಿ ಅತಿ ಹೆಚ್ಚು (3×10⁸ m/s)." },
+                { q: "ವಾತಾವರಣದ ಯಾವ ಪದರದಲ್ಲಿ ಓಝೋನ್ ಇದೆ?", options: ["ಟ್ರೋಪೋಸ್ಫಿಯರ್", "ಸ್ಟ್ರಾಟೋಸ್ಫಿಯರ್", "ಮೆಸೋಸ್ಫಿಯರ್", "ಥರ್ಮೋಸ್ಫಿಯರ್"], correct: 1, subject: 'science', explanation: "ಓಝೋನ್ ಪದರವು ಸ್ಟ್ರಾಟೋಸ್ಫಿಯರ್‌ನಲ್ಲಿ (15-35 ಕಿ.ಮೀ ಎತ್ತರ) ಇದೆ." },
+                { q: "ಮಾನವನ ದೇಹದಲ್ಲಿ ಅತಿ ಉದ್ದವಾದ ಮೂಳೆ ಯಾವುದು?", options: ["ತೊಡೆಯ ಮೂಳೆ", "ಮುಂಗೈ ಮೂಳೆ", "ಬೆನ್ನೆಲುಬು", "ಪಕ್ಕೆಲುಬು"], correct: 0, subject: 'science', explanation: "ಫೀಮರ್ (ತೊಡೆಯ ಮೂಳೆ) ಮಾನವ ದೇಹದ ಅತಿ ಉದ್ದವಾದ ಮೂಳೆ." },
+                { q: "ಜೀವಿಗಳಲ್ಲಿ ಉಸಿರಾಟದ ಮೂಲ ಉದ್ದೇಶ ಏನು?", options: ["ಆಹಾರ ಸೇವನೆ", "ಶಕ್ತಿ ಉತ್ಪಾದನೆ", "ನೀರು ಸೇವನೆ", "ಬೆಳವಣಿಗೆ"], correct: 1, subject: 'science', explanation: "ಉಸಿರಾಟದ ಮೂಲ ಉದ್ದೇಶ ಆಹಾರವನ್ನು ಉತ್ಕರ್ಷಿಸಿ ಶಕ್ತಿ (ATP) ಉತ್ಪಾದಿಸುವುದು." },
+                { q: "ಅತಿ ಹೆಚ್ಚು ವಿದ್ಯುತ್ ವಾಹಕ ಲೋಹ ಯಾವುದು?", options: ["ತಾಮ್ರ", "ಬೆಳ್ಳಿ", "ಚಿನ್ನ", "ಅಲ್ಯೂಮಿನಿಯಂ"], correct: 1, subject: 'science', explanation: "ಬೆಳ್ಳಿ ಅತ್ಯುತ್ತಮ ವಿದ್ಯುತ್ ವಾಹಕ, ಆದರೆ ವೆಚ್ಚದ ಕಾರಣ ತಾಮ್ರವನ್ನು ಬಳಸುತ್ತಾರೆ." },
+                { q: "ನೀರಿನ ಮೂರನೇ ಸ್ಥಿತಿ ಯಾವುದು?", options: ["ಘನ", "ದ್ರವ", "ಅನಿಲ", "ಪ್ಲಾಸ್ಮಾ"], correct: 2, subject: 'science', explanation: "ನೀರಿನ ಮೂರು ಸ್ಥಿತಿಗಳು: ಘನ (ಮಂಜುಗಡ್ಡೆ), ದ್ರವ (ನೀರು), ಅನಿಲ (ಆವಿ)." },
+                { q: "ಮಾನವನಲ್ಲಿ ರಕ್ತದ ಪ್ರಮಾಣ ಸುಮಾರು ಎಷ್ಟು?", options: ["2-3 ಲೀಟರ್", "5-6 ಲೀಟರ್", "8-10 ಲೀಟರ್", "1-2 ಲೀಟರ್"], correct: 1, subject: 'science', explanation: "ಸರಾಸರಿ ವಯಸ್ಕ ಮಾನವನ ದೇಹದಲ್ಲಿ 5-6 ಲೀಟರ್ ರಕ್ತ ಇರುತ್ತದೆ." },
+                { q: "ಅತಿ ದೊಡ್ಡ ಸಸ್ತನಿ ಯಾವುದು?", options: ["ಆನೆ", "ನೀಲಿ ತಿಮಿಂಗಿಲ", "ಜಿರಾಫೆ", "ಕರಡಿ"], correct: 1, subject: 'science', explanation: "ನೀಲಿ ತಿಮಿಂಗಿಲ (Blue Whale) ಅತಿ ದೊಡ್ಡ ಸಸ್ತನಿ, ಇದು 30 ಮೀಟರ್ ಉದ್ದ ಬೆಳೆಯುತ್ತದೆ." },
+                // 81-90 Science
+                { q: "ಸಸ್ಯಗಳಲ್ಲಿ ಬೀಜ ಉತ್ಪಾದನೆ ಮಾಡುವ ಅಂಗ?", options: ["ಬೇರು", "ಕಾಂಡ", "ಹೂ", "ಎಲೆ"], correct: 2, subject: 'science', explanation: "ಹೂವು ಸಸ್ಯಗಳ ಸಂತಾನೋತ್ಪತ್ತಿ ಅಂಗ, ಇದರಲ್ಲಿ ಬೀಜ ಉತ್ಪಾದನೆಯಾಗುತ್ತದೆ." },
+                { q: "ಭೂಮಿಯ ವಾತಾವರಣದಲ್ಲಿ ಯಾವ ಪದರ ಅತಿ ತಣ್ಣಗಿರುತ್ತದೆ?", options: ["ಟ್ರೋಪೋಸ್ಫಿಯರ್", "ಸ್ಟ್ರಾಟೋಸ್ಫಿಯರ್", "ಮೆಸೋಸ್ಫಿಯರ್", "ಥರ್ಮೋಸ್ಫಿಯರ್"], correct: 2, subject: 'science', explanation: "ಮೆಸೋಸ್ಫಿಯರ್ ವಾತಾವರಣದ ಅತಿ ತಣ್ಣನೆಯ ಪದರ (-90°C ವರೆಗೆ)." },
+                { q: "ವಾತಾವರಣದಲ್ಲಿ ಸಾರಜನಕದ ಶೇಕಡಾವಾರು?", options: ["21%", "78%", "0.04%", "50%"], correct: 1, subject: 'science', explanation: "ವಾತಾವರಣದಲ್ಲಿ ಸಾರಜನಕ ಸುಮಾರು 78% ಇದೆ." },
+                { q: "ಅತಿ ಚಿಕ್ಕ ಗ್ರಹ ಯಾವುದು?", options: ["ಬುಧ", "ಮಂಗಳ", "ಶುಕ್ರ", "ಭೂಮಿ"], correct: 0, subject: 'science', explanation: "ಬುಧ (Mercury) ಸೌರಮಂಡಲದ ಅತಿ ಚಿಕ್ಕ ಗ್ರಹ." },
+                { q: "ವಜ್ರವು ಯಾವ ಧಾತುವಿನ ರೂಪ?", options: ["ಕಬ್ಬಿಣ", "ಇಂಗಾಲ", "ಚಿನ್ನ", "ತಾಮ್ರ"], correct: 1, subject: 'science', explanation: "ವಜ್ರವು ಇಂಗಾಲದ (Carbon) ಒಂದು ರೂಪ (ಅಲ್ಲೋಟ್ರೋಪ್)." },
+                { q: "ಮಾನವನ ದೇಹದಲ್ಲಿ ನೀರಿನ ಶೇಕಡಾವಾರು?", options: ["30%", "50%", "70%", "90%"], correct: 2, subject: 'science', explanation: "ಮಾನವ ದೇಹದಲ್ಲಿ ಸುಮಾರು 60-70% ನೀರು ಇರುತ್ತದೆ." },
+                { q: "ಒಂದು ವರ್ಷದಲ್ಲಿ ಎಷ್ಟು ದಿನಗಳಿರುತ್ತವೆ?", options: ["365", "366", "364", "360"], correct: 0, subject: 'science', explanation: "ಸಾಮಾನ್ಯ ವರ್ಷದಲ್ಲಿ 365 ದಿನ, ಅಧಿಕ ವರ್ಷದಲ್ಲಿ 366 ದಿನ." },
+                { q: "ಭೂಮಿಯ ಅತಿ ಹತ್ತಿರದ ನಕ್ಷತ್ರ ಯಾವುದು?", options: ["ಸೂರ್ಯ", "ಪ್ರಾಕ್ಸಿಮಾ ಸೆಂಟೌರಿ", "ಧ್ರುವ ನಕ್ಷತ್ರ", "ಸಿರಿಯಸ್"], correct: 0, subject: 'science', explanation: "ಸೂರ್ಯ ಭೂಮಿಯ ಅತಿ ಹತ್ತಿರದ ನಕ್ಷತ್ರ (ಸುಮಾರು 15 ಕೋಟಿ ಕಿ.ಮೀ)." },
+                { q: "ವಾತಾವರಣದಲ್ಲಿ ಯಾವ ಅನಿಲ ಉಸಿರಾಟಕ್ಕೆ ಅತ್ಯಗತ್ಯ?", options: ["ಸಾರಜನಕ", "ಆಮ್ಲಜನಕ", "ಕಾರ್ಬನ್ ಡೈಆಕ್ಸೈಡ್", "ಹೈಡ್ರೋಜನ್"], correct: 1, subject: 'science', explanation: "ಆಮ್ಲಜನಕ (O₂) ಉಸಿರಾಟಕ್ಕೆ ಅತ್ಯಗತ್ಯ." },
+                { q: "ಮಾನವನಲ್ಲಿ ಎಷ್ಟು ರಕ್ತ ಗುಂಪುಗಳಿವೆ?", options: ["2", "3", "4", "6"], correct: 2, subject: 'science', explanation: "4 ಮುಖ್ಯ ರಕ್ತ ಗುಂಪುಗಳು: A, B, AB, O." },
+                // 91-100 Science
+                { q: "ಸಸ್ಯಗಳಿಗೆ ಆಧಾರ ನೀಡುವ ಅಂಗ?", options: ["ಬೇರು", "ಕಾಂಡ", "ಎಲೆ", "ಹೂ"], correct: 1, subject: 'science', explanation: "ಕಾಂಡ ಸಸ್ಯಗಳಿಗೆ ಆಧಾರ ನೀಡುತ್ತದೆ ಮತ್ತು ಆಹಾರ ಸಾಗಿಸುತ್ತದೆ." },
+                { q: "ಬೆಳಕಿನ ವರ್ಣಪಟಲದಲ್ಲಿ ಎಷ್ಟು ಬಣ್ಣಗಳಿವೆ?", options: ["5", "6", "7", "8"], correct: 2, subject: 'science', explanation: "ಬೆಳಕಿನ ವರ್ಣಪಟಲದಲ್ಲಿ 7 ಬಣ್ಣಗಳಿವೆ (VIBGYOR)." },
+                { q: "ಮಾನವನ ಮೂತ್ರಪಿಂಡದ ಸಂಖ್ಯೆ?", options: ["1", "2", "3", "4"], correct: 1, subject: 'science', explanation: "ಮಾನವನಲ್ಲಿ 2 ಮೂತ್ರಪಿಂಡಗಳಿವೆ." },
+                { q: "ಅತಿ ದೊಡ್ಡ ಅಂಗ (ಆಂತರಿಕ) ಯಾವುದು?", options: ["ಹೃದಯ", "ಯಕೃತ್ತು", "ಮೂತ್ರಪಿಂಡ", "ಶ್ವಾಸಕೋಶ"], correct: 1, subject: 'science', explanation: "ಯಕೃತ್ತು (Liver) ದೇಹದ ಅತಿ ದೊಡ್ಡ ಆಂತರಿಕ ಅಂಗ." },
+                { q: "ವಿದ್ಯುತ್ ಬಲ್ಬ್‌ನಲ್ಲಿ ಯಾವ ಲೋಹದ ತಂತಿ ಬಳಸುತ್ತಾರೆ?", options: ["ತಾಮ್ರ", "ಟಂಗ್ಸ್ಟನ್", "ಅಲ್ಯೂಮಿನಿಯಂ", "ಕಬ್ಬಿಣ"], correct: 1, subject: 'science', explanation: "ಟಂಗ್ಸ್ಟನ್ ಅತಿ ಹೆಚ್ಚು ದ್ರವೀಕರಣ ಬಿಂದು ಹೊಂದಿರುವ ಕಾರಣ ಬಲ್ಬ್‌ನಲ್ಲಿ ಬಳಸುತ್ತಾರೆ." },
+                { q: "ಮಾನವನಲ್ಲಿ ಎಷ್ಟು ಪಕ್ಕೆಲುಬುಗಳಿವೆ?", options: ["10", "12", "14", "16"], correct: 1, subject: 'science', explanation: "ಮಾನವನಲ್ಲಿ 12 ಜೋಡಿ ಪಕ್ಕೆಲುಬುಗಳಿವೆ (24 ಒಟ್ಟು)." },
+                { q: "ನೀರಿನ ಅಣುವಿನಲ್ಲಿ ಎಷ್ಟು ಪರಮಾಣುಗಳಿವೆ?", options: ["2", "3", "4", "5"], correct: 1, subject: 'science', explanation: "ನೀರಿನ ಅಣುವಿನಲ್ಲಿ 3 ಪರಮಾಣುಗಳಿವೆ (2 ಹೈಡ್ರೋಜನ್ + 1 ಆಮ್ಲಜನಕ)." },
+                { q: "ಸೌರಮಂಡಲದ ಅತಿ ಶೀತಲ ಗ್ರಹ ಯಾವುದು?", options: ["ನೆಪ್ಚೂನ್", "ಯುರೇನಸ್", "ಶನಿ", "ಮಂಗಳ"], correct: 0, subject: 'science', explanation: "ನೆಪ್ಚೂನ್ ಸೌರಮಂಡಲದ ಅತಿ ಶೀತಲ ಗ್ರಹ (-214°C)." },
+                { q: "ಮಾನವನ ಬೆನ್ನುಮೂಳೆಯಲ್ಲಿ ಎಷ್ಟು ಕಶೇರುಕಗಳಿವೆ?", options: ["28", "33", "40", "24"], correct: 1, subject: 'science', explanation: "ಮಾನವನ ಬೆನ್ನುಮೂಳೆಯಲ್ಲಿ 33 ಕಶೇರುಕಗಳಿವೆ." },
+                { q: "ಅತಿ ಹೆಚ್ಚು ಕಠಿಣವಾದ ಮಾನವ ಅಂಗಾಂಶ?", options: ["ಮೂಳೆ", "ಎನಾಮೆಲ್", "ಸ್ನಾಯು", "ಕೂದಲು"], correct: 1, subject: 'science', explanation: "ಹಲ್ಲಿನ ಎನಾಮೆಲ್ ಮಾನವ ದೇಹದ ಅತಿ ಕಠಿಣವಾದ ಅಂಗಾಂಶ." },
+
+                // =========================================================
+                // MATHS - 100 QUESTIONS (index 100-199)
+                // =========================================================
+                // 101-110 Maths
+                { q: "12 ಮತ್ತು 18 ರ ಲ.ಸ.ಅ. (LCM) ಎಷ್ಟು?", options: ["36", "24", "72", "6"], correct: 0, subject: 'maths', explanation: "12 = 2²×3, 18 = 2×3². LCM = 2²×3² = 4×9 = 36." },
+                { q: "ಒಂದು ತ್ರಿಭುಜದ ಮೂರು ಕೋನಗಳ ಮೊತ್ತ ಎಷ್ಟು?", options: ["90°", "180°", "270°", "360°"], correct: 1, subject: 'maths', explanation: "ಯಾವುದೇ ತ್ರಿಭುಜದ ಒಳಕೋನಗಳ ಮೊತ್ತ ಸದಾ 180 ಡಿಗ್ರಿ." },
+                { q: "25% ಅನ್ನು ಭಿನ್ನರಾಶಿಯಲ್ಲಿ ಬರೆಯಿರಿ.", options: ["1/2", "1/4", "1/5", "1/3"], correct: 1, subject: 'maths', explanation: "25% = 25/100 = 1/4." },
+                { q: "7² ಎಷ್ಟು?", options: ["14", "49", "77", "21"], correct: 1, subject: 'maths', explanation: "7² = 7×7 = 49." },
+                { q: "ಒಂದು ಚೌಕದ ಬಾಹುವಿನ ಉದ್ದ 5 ಸೆಂ.ಮೀ. ಅದರ ವಿಸ್ತೀರ್ಣ ಎಷ್ಟು?", options: ["25 cm²", "20 cm²", "10 cm²", "15 cm²"], correct: 0, subject: 'maths', explanation: "ಚೌಕದ ವಿಸ್ತೀರ್ಣ = ಬಾಹು × ಬಾಹು = 5×5 = 25 cm²." },
+                { q: "√144 ಎಷ್ಟು?", options: ["12", "14", "16", "18"], correct: 0, subject: 'maths', explanation: "12×12 = 144, ಆದ್ದರಿಂದ √144 = 12." },
+                { q: "0.5 ಅನ್ನು ಶೇಕಡಾವಾರಾಗಿ ಬರೆಯಿರಿ.", options: ["5%", "50%", "0.5%", "500%"], correct: 1, subject: 'maths', explanation: "0.5 × 100 = 50%." },
+                { q: "ಒಂದು ಸಂಖ್ಯೆಯ 10% = 50 ಆದರೆ ಆ ಸಂಖ್ಯೆ ಎಷ್ಟು?", options: ["500", "100", "50", "1000"], correct: 0, subject: 'maths', explanation: "10% = 50 ⇒ 1% = 5 ⇒ 100% = 500." },
+                { q: "ಸರಾಸರಿ ಕಂಡುಹಿಡಿಯಿರಿ: 4, 8, 12, 16", options: ["10", "12", "8", "14"], correct: 0, subject: 'maths', explanation: "ಮೊತ್ತ = 4+8+12+16 = 40, ಸಂಖ್ಯೆಗಳು = 4, ಸರಾಸರಿ = 40/4 = 10." },
+                { q: "ಒಂದು ಆಯತದ ಉದ್ದ 8 ಸೆಂ.ಮೀ, ಅಗಲ 5 ಸೆಂ.ಮೀ. ಅದರ ಸುತ್ತಳತೆ ಎಷ್ಟು?", options: ["26 cm", "40 cm", "13 cm", "30 cm"], correct: 0, subject: 'maths', explanation: "ಸುತ್ತಳತೆ = 2(ಉದ್ದ+ಅಗಲ) = 2(8+5) = 2×13 = 26 cm." },
+                // 111-120 Maths
+                { q: "ಒಂದು ಸಂಖ್ಯೆಯ 3/4 ಭಾಗ 60 ಆದರೆ ಸಂಖ್ಯೆ ಎಷ್ಟು?", options: ["80", "45", "75", "90"], correct: 0, subject: 'maths', explanation: "(3/4)x = 60 ⇒ x = 60×(4/3) = 80." },
+                { q: "15 ಮತ್ತು 25 ರ ಮ.ಸಾ.ಅ. (GCD) ಎಷ್ಟು?", options: ["5", "15", "25", "75"], correct: 0, subject: 'maths', explanation: "15 = 3×5, 25 = 5×5. ಸಾಮಾನ್ಯ ಅಪವರ್ತನ 5, ಆದ್ದರಿಂದ GCD = 5." },
+                { q: "ಒಂದು ವೃತ್ತದ ಪರಿಧಿ = 2πr. r = 7 ಸೆಂ.ಮೀ ಆದರೆ ಪರಿಧಿ ಎಷ್ಟು? (π=22/7)", options: ["44 cm", "22 cm", "154 cm", "49 cm"], correct: 0, subject: 'maths', explanation: "ಪರಿಧಿ = 2×(22/7)×7 = 44 cm." },
+                { q: "ಸಮೀಕರಣ: x + 5 = 12, x = ?", options: ["7", "17", "5", "12"], correct: 0, subject: 'maths', explanation: "x = 12 - 5 = 7." },
+                { q: "ಒಂದು ಘನದ ಘನಫಲ (ಬಾಹು = 3 ಸೆಂ.ಮೀ) ಎಷ್ಟು?", options: ["27 cm³", "9 cm³", "18 cm³", "81 cm³"], correct: 0, subject: 'maths', explanation: "ಘನಫಲ = ಬಾಹು³ = 3×3×3 = 27 cm³." },
+                { q: "ಸರಳ ಬಡ್ಡಿ = P×R×T/100. P=1000, R=5%, T=2 ವರ್ಷ. ಬಡ್ಡಿ ಎಷ್ಟು?", options: ["100", "200", "50", "150"], correct: 0, subject: 'maths', explanation: "SI = (1000×5×2)/100 = 100." },
+                { q: "ಒಂದು ಸಂಖ್ಯೆಯನ್ನು 0.25 ರಿಂದ ಗುಣಿಸಿದಾಗ 20 ಬಂದರೆ ಆ ಸಂಖ್ಯೆ?", options: ["80", "5", "40", "60"], correct: 0, subject: 'maths', explanation: "x × 0.25 = 20 ⇒ x = 20/0.25 = 80." },
+                { q: "ಸಮಬಾಹು ತ್ರಿಭುಜದ ಪ್ರತಿ ಕೋನ ಎಷ್ಟು?", options: ["30°", "60°", "90°", "45°"], correct: 1, subject: 'maths', explanation: "ಸಮಬಾಹು ತ್ರಿಭುಜದ ಮೂರು ಕೋನ ಸಮ, ಮೊತ್ತ 180°, ಆದ್ದರಿಂದ ಪ್ರತಿ ಕೋನ 60°." },
+                { q: "5 ನೇ ಘಾತ: 2⁵ = ?", options: ["32", "10", "25", "64"], correct: 0, subject: 'maths', explanation: "2⁵ = 2×2×2×2×2 = 32." },
+                { q: "ಒಂದು ಸಂಖ್ಯೆಯ 20% = 80 ಆದರೆ ಅದರ 50% ಎಷ್ಟು?", options: ["200", "160", "400", "100"], correct: 0, subject: 'maths', explanation: "20% = 80 ⇒ 100% = 400. 50% = 200." },
+                // 121-130 Maths
+                { q: "ಒಂದು ಸಂಖ್ಯೆಯ 5% = 25 ಆದರೆ ಸಂಖ್ಯೆ?", options: ["500", "125", "250", "50"], correct: 0, subject: 'maths', explanation: "5% = 25 ⇒ 1% = 5 ⇒ 100% = 500." },
+                { q: "ಒಂದು ಲೀಟರ್ = ಎಷ್ಟು ಮಿಲಿಲೀಟರ್?", options: ["100", "1000", "10000", "10"], correct: 1, subject: 'maths', explanation: "1 ಲೀಟರ್ = 1000 ಮಿಲಿಲೀಟರ್." },
+                { q: "ಸಮೀಕರಣ 2x - 3 = 7, x = ?", options: ["5", "2", "10", "4"], correct: 0, subject: 'maths', explanation: "2x = 7+3 = 10 ⇒ x = 5." },
+                { q: "ಒಂದು ವೃತ್ತದ ವ್ಯಾಸ 14 ಸೆಂ.ಮೀ. ತ್ರಿಜ್ಯ ಎಷ್ಟು?", options: ["7 cm", "28 cm", "14 cm", "21 cm"], correct: 0, subject: 'maths', explanation: "ತ್ರಿಜ್ಯ = ವ್ಯಾಸ/2 = 14/2 = 7 cm." },
+                { q: "ಒಂದು ಸಂಖ್ಯೆಯನ್ನು 3 ರಿಂದ ಭಾಗಿಸಿದಾಗ 7 ಬಂದರೆ ಸಂಖ್ಯೆ?", options: ["21", "10", "24", "14"], correct: 0, subject: 'maths', explanation: "x/3 = 7 ⇒ x = 21." },
+                { q: "ಒಂದು ತ್ರಿಭುಜದ ಬಾಹುಗಳು 3,4,5. ಇದು ಯಾವ ತ್ರಿಭುಜ?", options: ["ಸಮಬಾಹು", "ಸಮದ್ವಿಬಾಹು", "ಲಂಬಕೋನ", "ವಿಷಮಬಾಹು"], correct: 2, subject: 'maths', explanation: "3²+4² = 9+16 = 25 = 5². ಪೈಥಾಗೊರಸ್ ಪ್ರಮೇಯದ ಪ್ರಕಾರ ಇದು ಲಂಬಕೋನ ತ್ರಿಭುಜ." },
+                { q: "ಸರಾಸರಿ ಕಂಡುಹಿಡಿಯಿರಿ: 10, 20, 30, 40, 50", options: ["30", "25", "35", "40"], correct: 0, subject: 'maths', explanation: "ಮೊತ್ತ = 150, ಸಂಖ್ಯೆ = 5, ಸರಾಸರಿ = 150/5 = 30." },
+                { q: "ಒಂದು ಸಂಖ್ಯೆಯ 1/5 ಭಾಗ = 20, ಸಂಖ್ಯೆ?", options: ["100", "80", "120", "60"], correct: 0, subject: 'maths', explanation: "x/5 = 20 ⇒ x = 100." },
+                { q: "ಒಂದು ಚೌಕದ ವಿಸ್ತೀರ್ಣ 64 cm² ಆದರೆ ಬಾಹು ಎಷ್ಟು?", options: ["8 cm", "16 cm", "32 cm", "4 cm"], correct: 0, subject: 'maths', explanation: "ಬಾಹು² = 64 ⇒ ಬಾಹು = 8 cm." },
+                { q: "1 ಡಜನ್ = ಎಷ್ಟು?", options: ["10", "12", "20", "6"], correct: 1, subject: 'maths', explanation: "1 ಡಜನ್ = 12." },
+                // 131-140 Maths
+                { q: "ಒಂದು ಆಯತದ ಉದ್ದ 12 ಸೆಂ.ಮೀ, ಅಗಲ 4 ಸೆಂ.ಮೀ. ವಿಸ್ತೀರ್ಣ?", options: ["48 cm²", "16 cm²", "32 cm²", "24 cm²"], correct: 0, subject: 'maths', explanation: "ವಿಸ್ತೀರ್ಣ = ಉದ್ದ × ಅಗಲ = 12×4 = 48 cm²." },
+                { q: "ಒಂದು ಸಂಖ್ಯೆಯ 25% = 75, ಸಂಖ್ಯೆ?", options: ["300", "150", "225", "200"], correct: 0, subject: 'maths', explanation: "25% = 75 ⇒ 100% = 300." },
+                { q: "ಎರಡು ಸಮಾನಾಂತರ ರೇಖೆಗಳ ನಡುವಿನ ಅಂತರ ಯಾವಾಗಲೂ?", options: ["ಸಮಾನ", "ಅಸಮಾನ", "ಬದಲಾಗುತ್ತದೆ", "ಶೂನ್ಯ"], correct: 0, subject: 'maths', explanation: "ಸಮಾನಾಂತರ ರೇಖೆಗಳ ನಡುವಿನ ಲಂಬ ಅಂತರ ಸದಾ ಸಮಾನ." },
+                { q: "1/2 + 1/4 = ?", options: ["3/4", "2/6", "1/6", "2/4"], correct: 0, subject: 'maths', explanation: "1/2 = 2/4, ಆದ್ದರಿಂದ 2/4 + 1/4 = 3/4." },
+                { q: "ಒಂದು ಘನದ ಮೇಲ್ಮೈ ವಿಸ್ತೀರ್ಣ = 6a². a=2 ಸೆಂ.ಮೀ ಆದರೆ ವಿಸ್ತೀರ್ಣ?", options: ["24 cm²", "12 cm²", "48 cm²", "8 cm²"], correct: 0, subject: 'maths', explanation: "6a² = 6×2² = 6×4 = 24 cm²." },
+                { q: "ಸಂಖ್ಯೆ 0.75 ಅನ್ನು ಭಿನ್ನರಾಶಿಯಲ್ಲಿ ಬರೆಯಿರಿ.", options: ["3/4", "1/2", "2/3", "3/5"], correct: 0, subject: 'maths', explanation: "0.75 = 75/100 = 3/4." },
+                { q: "ಒಂದು ಸಂಖ್ಯೆಯ 10% = 15, ಅದರ 20% ಎಷ್ಟು?", options: ["30", "20", "45", "60"], correct: 0, subject: 'maths', explanation: "10% = 15 ⇒ 20% = 30." },
+                { q: "ಬಡ್ಡಿ ದರ 10% ಆದರೆ 5000 ರೂ.ಗಳಿಗೆ 1 ವರ್ಷದ ಸರಳ ಬಡ್ಡಿ?", options: ["500", "100", "50", "1000"], correct: 0, subject: 'maths', explanation: "SI = (5000×10×1)/100 = 500." },
+                { q: "ಒಂದು ಸಂಖ್ಯೆಯ ವರ್ಗ 81 ಆದರೆ ಸಂಖ್ಯೆ?", options: ["9", "8", "7", "6"], correct: 0, subject: 'maths', explanation: "9² = 81, ಆದ್ದರಿಂದ ಸಂಖ್ಯೆ 9." },
+                { q: "ಸಮೀಕರಣ 3x + 2 = 11, x = ?", options: ["3", "2", "4", "5"], correct: 0, subject: 'maths', explanation: "3x = 9 ⇒ x = 3." },
+                // 141-150 Maths
+                { q: "ಒಂದು ಸಂಖ್ಯೆಯ 3/5 ಭಾಗ = 30, ಸಂಖ್ಯೆ?", options: ["50", "45", "60", "75"], correct: 0, subject: 'maths', explanation: "(3/5)x = 30 ⇒ x = 30×5/3 = 50." },
+                { q: "ಒಂದು ವೃತ್ತದ ವಿಸ್ತೀರ್ಣ = πr². r=7 ಸೆಂ.ಮೀ ಆದರೆ ವಿಸ್ತೀರ್ಣ? (π=22/7)", options: ["154 cm²", "49 cm²", "44 cm²", "22 cm²"], correct: 0, subject: 'maths', explanation: "ವಿಸ್ತೀರ್ಣ = (22/7)×7² = (22/7)×49 = 22×7 = 154 cm²." },
+                { q: "ಒಂದು ಸಂಖ್ಯೆಯ ಘನ 27 ಆದರೆ ಸಂಖ್ಯೆ?", options: ["3", "9", "27", "6"], correct: 0, subject: 'maths', explanation: "3³ = 27, ಆದ್ದರಿಂದ ಸಂಖ್ಯೆ 3." },
+                { q: "ಸಮೀಕರಣ 5x = 45, x = ?", options: ["9", "5", "40", "50"], correct: 0, subject: 'maths', explanation: "x = 45/5 = 9." },
+                { q: "ಎರಡು ಸಂಖ್ಯೆಗಳ ಮೊತ್ತ 20, ಒಂದು 8 ಆದರೆ ಇನ್ನೊಂದು?", options: ["12", "28", "10", "16"], correct: 0, subject: 'maths', explanation: "ಇನ್ನೊಂದು ಸಂಖ್ಯೆ = 20 - 8 = 12." },
+                { q: "ಒಂದು ತ್ರಿಭುಜದ ವಿಸ್ತೀರ್ಣ = 1/2 × ತಳ × ಎತ್ತರ. ತಳ=10, ಎತ್ತರ=6 ಆದರೆ ವಿಸ್ತೀರ್ಣ?", options: ["30 cm²", "60 cm²", "16 cm²", "20 cm²"], correct: 0, subject: 'maths', explanation: "ವಿಸ್ತೀರ್ಣ = (1/2)×10×6 = 30 cm²." },
+                { q: "ಸಂಖ್ಯೆ 144 ರ ವರ್ಗಮೂಲ?", options: ["12", "14", "16", "18"], correct: 0, subject: 'maths', explanation: "12² = 144, ಆದ್ದರಿಂದ √144 = 12." },
+                { q: "ಒಂದು ಸಂಖ್ಯೆಯನ್ನು 7 ರಿಂದ ಗುಣಿಸಿದಾಗ 56 ಬಂದರೆ ಸಂಖ್ಯೆ?", options: ["8", "7", "9", "6"], correct: 0, subject: 'maths', explanation: "x×7 = 56 ⇒ x = 8." },
+                { q: "1/3 + 1/6 = ?", options: ["1/2", "2/9", "1/9", "2/6"], correct: 0, subject: 'maths', explanation: "1/3 = 2/6, ಆದ್ದರಿಂದ 2/6 + 1/6 = 3/6 = 1/2." },
+                { q: "ಒಂದು ಆಯತದ ಸುತ್ತಳತೆ = 2(l+b). l=10, b=6 ಆದರೆ ಸುತ್ತಳತೆ?", options: ["32 cm", "60 cm", "16 cm", "30 cm"], correct: 0, subject: 'maths', explanation: "ಸುತ್ತಳತೆ = 2(10+6) = 2×16 = 32 cm." },
+                // 151-160 Maths
+                { q: "ಒಂದು ಸಂಖ್ಯೆಯ 40% = 120, ಸಂಖ್ಯೆ?", options: ["300", "480", "240", "200"], correct: 0, subject: 'maths', explanation: "40% = 120 ⇒ 100% = 300." },
+                { q: "ಒಂದು ಚೌಕದ ಸುತ್ತಳತೆ 20 ಸೆಂ.ಮೀ. ಬಾಹು ಎಷ್ಟು?", options: ["5 cm", "4 cm", "10 cm", "8 cm"], correct: 0, subject: 'maths', explanation: "ಸುತ್ತಳತೆ = 4a ⇒ 20 = 4a ⇒ a = 5 cm." },
+                { q: "ಸಮೀಕರಣ 4x - 5 = 15, x = ?", options: ["5", "4", "3", "6"], correct: 0, subject: 'maths', explanation: "4x = 20 ⇒ x = 5." },
+                { q: "ಒಂದು ಸಂಖ್ಯೆಯ 12.5% = 25, ಸಂಖ್ಯೆ?", options: ["200", "300", "150", "250"], correct: 0, subject: 'maths', explanation: "12.5% = 25 ⇒ 100% = 200." },
+                { q: "ಎರಡು ಸಂಖ್ಯೆಗಳ ಗುಣಲಬ್ಧ 36, ಒಂದು 4 ಆದರೆ ಇನ್ನೊಂದು?", options: ["9", "8", "6", "12"], correct: 0, subject: 'maths', explanation: "4×x = 36 ⇒ x = 9." },
+                { q: "ಒಂದು ಸಂಖ್ಯೆಯ 2/3 ಭಾಗ = 18, ಸಂಖ್ಯೆ?", options: ["27", "24", "30", "21"], correct: 0, subject: 'maths', explanation: "(2/3)x = 18 ⇒ x = 27." },
+                { q: "ಒಂದು ಸಿಲಿಂಡರ್‌ನ ಘನಫಲ = πr²h. r=2, h=7 ಆದರೆ ಘನಫಲ? (π=22/7)", options: ["88 cm³", "44 cm³", "154 cm³", "22 cm³"], correct: 0, subject: 'maths', explanation: "ಘನಫಲ = (22/7)×4×7 = 22×4 = 88 cm³." },
+                { q: "ಒಂದು ಸಂಖ್ಯೆಯ 5/8 ಭಾಗ = 40, ಸಂಖ್ಯೆ?", options: ["64", "56", "72", "80"], correct: 0, subject: 'maths', explanation: "(5/8)x = 40 ⇒ x = 64." },
+                { q: "ಸಮೀಕರಣ x/4 = 5, x = ?", options: ["20", "9", "1", "16"], correct: 0, subject: 'maths', explanation: "x = 5×4 = 20." },
+                { q: "ಒಂದು ಸಂಖ್ಯೆಯ 30% = 60, ಅದರ 60% ಎಷ್ಟು?", options: ["120", "100", "90", "150"], correct: 0, subject: 'maths', explanation: "30% = 60 ⇒ 100% = 200 ⇒ 60% = 120." },
+                // 161-170 Maths
+                { q: "ಒಂದು ಸಂಖ್ಯೆಯ 15% = 45, ಸಂಖ್ಯೆ?", options: ["300", "250", "350", "400"], correct: 0, subject: 'maths', explanation: "15% = 45 ⇒ 1% = 3 ⇒ 100% = 300." },
+                { q: "ಒಂದು ಆಯತದ ಉದ್ದ 15 ಸೆಂ.ಮೀ, ಅಗಲ 8 ಸೆಂ.ಮೀ. ವಿಸ್ತೀರ್ಣ?", options: ["120 cm²", "23 cm²", "46 cm²", "60 cm²"], correct: 0, subject: 'maths', explanation: "ವಿಸ್ತೀರ್ಣ = 15×8 = 120 cm²." },
+                { q: "ಸಮೀಕರಣ 6x + 4 = 22, x = ?", options: ["3", "4", "5", "2"], correct: 0, subject: 'maths', explanation: "6x = 18 ⇒ x = 3." },
+                { q: "ಒಂದು ಸಂಖ್ಯೆಯ 80% = 160, ಸಂಖ್ಯೆ?", options: ["200", "180", "240", "220"], correct: 0, subject: 'maths', explanation: "80% = 160 ⇒ 100% = 200." },
+                { q: "ಒಂದು ಸಂಖ್ಯೆಯ 1/4 ಭಾಗ = 12, ಸಂಖ್ಯೆ?", options: ["48", "36", "24", "16"], correct: 0, subject: 'maths', explanation: "x/4 = 12 ⇒ x = 48." },
+                { q: "ಒಂದು ವೃತ್ತದ ತ್ರಿಜ್ಯ 3.5 ಸೆಂ.ಮೀ. ವ್ಯಾಸ ಎಷ್ಟು?", options: ["7 cm", "6 cm", "3.5 cm", "10 cm"], correct: 0, subject: 'maths', explanation: "ವ್ಯಾಸ = 2×ತ್ರಿಜ್ಯ = 2×3.5 = 7 cm." },
+                { q: "ಒಂದು ಸಂಖ್ಯೆಯ 45% = 90, ಸಂಖ್ಯೆ?", options: ["200", "250", "180", "300"], correct: 0, subject: 'maths', explanation: "45% = 90 ⇒ 100% = 200." },
+                { q: "ಸಮೀಕರಣ 7x = 84, x = ?", options: ["12", "14", "7", "10"], correct: 0, subject: 'maths', explanation: "x = 84/7 = 12." },
+                { q: "ಒಂದು ಸಂಖ್ಯೆಯ 22% = 44, ಸಂಖ್ಯೆ?", options: ["200", "220", "180", "250"], correct: 0, subject: 'maths', explanation: "22% = 44 ⇒ 1% = 2 ⇒ 100% = 200." },
+                { q: "ಒಂದು ಘನದ ಒಟ್ಟು ಮೇಲ್ಮೈ ವಿಸ್ತೀರ್ಣ = 6a². a=5 ಸೆಂ.ಮೀ ಆದರೆ ವಿಸ್ತೀರ್ಣ?", options: ["150 cm²", "125 cm²", "100 cm²", "200 cm²"], correct: 0, subject: 'maths', explanation: "6×5² = 6×25 = 150 cm²." },
+                // 171-180 Maths
+                { q: "ಒಂದು ಸಂಖ್ಯೆಯ 2/7 ಭಾಗ = 14, ಸಂಖ್ಯೆ?", options: ["49", "42", "56", "63"], correct: 0, subject: 'maths', explanation: "(2/7)x = 14 ⇒ x = 49." },
+                { q: "ಒಂದು ಸಂಖ್ಯೆಯ 35% = 70, ಸಂಖ್ಯೆ?", options: ["200", "180", "250", "220"], correct: 0, subject: 'maths', explanation: "35% = 70 ⇒ 100% = 200." },
+                { q: "ಸಮೀಕರಣ 8x - 3 = 61, x = ?", options: ["8", "7", "9", "6"], correct: 0, subject: 'maths', explanation: "8x = 64 ⇒ x = 8." },
+                { q: "ಒಂದು ಸಂಖ್ಯೆಯ 90% = 450, ಸಂಖ್ಯೆ?", options: ["500", "450", "550", "400"], correct: 0, subject: 'maths', explanation: "90% = 450 ⇒ 100% = 500." },
+                { q: "ಒಂದು ಸಂಖ್ಯೆಯ 1/6 ಭಾಗ = 15, ಸಂಖ್ಯೆ?", options: ["90", "75", "60", "80"], correct: 0, subject: 'maths', explanation: "x/6 = 15 ⇒ x = 90." },
+                { q: "ಒಂದು ಸಂಖ್ಯೆಯ 6% = 30, ಸಂಖ್ಯೆ?", options: ["500", "600", "450", "550"], correct: 0, subject: 'maths', explanation: "6% = 30 ⇒ 1% = 5 ⇒ 100% = 500." },
+                { q: "ಒಂದು ಸಂಖ್ಯೆಯ 3/8 ಭಾಗ = 24, ಸಂಖ್ಯೆ?", options: ["64", "56", "72", "48"], correct: 0, subject: 'maths', explanation: "(3/8)x = 24 ⇒ x = 64." },
+                { q: "ಒಂದು ಸಂಖ್ಯೆಯ 55% = 110, ಸಂಖ್ಯೆ?", options: ["200", "220", "250", "180"], correct: 0, subject: 'maths', explanation: "55% = 110 ⇒ 100% = 200." },
+                { q: "ಸಮೀಕರಣ 9x + 9 = 90, x = ?", options: ["9", "8", "10", "7"], correct: 0, subject: 'maths', explanation: "9x = 81 ⇒ x = 9." },
+                { q: "ಒಂದು ಸಂಖ್ಯೆಯ 12% = 36, ಸಂಖ್ಯೆ?", options: ["300", "250", "350", "400"], correct: 0, subject: 'maths', explanation: "12% = 36 ⇒ 1% = 3 ⇒ 100% = 300." },
+                // 181-190 Maths
+                { q: "ಒಂದು ಸಂಖ್ಯೆಯ 4/9 ಭಾಗ = 36, ಸಂಖ್ಯೆ?", options: ["81", "72", "90", "63"], correct: 0, subject: 'maths', explanation: "(4/9)x = 36 ⇒ x = 81." },
+                { q: "ಒಂದು ಸಂಖ್ಯೆಯ 70% = 210, ಸಂಖ್ಯೆ?", options: ["300", "280", "350", "250"], correct: 0, subject: 'maths', explanation: "70% = 210 ⇒ 100% = 300." },
+                { q: "ಸಮೀಕರಣ 11x - 5 = 105, x = ?", options: ["10", "9", "11", "12"], correct: 0, subject: 'maths', explanation: "11x = 110 ⇒ x = 10." },
+                { q: "ಒಂದು ಸಂಖ್ಯೆಯ 65% = 260, ಸಂಖ್ಯೆ?", options: ["400", "350", "450", "300"], correct: 0, subject: 'maths', explanation: "65% = 260 ⇒ 100% = 400." },
+                { q: "ಒಂದು ಸಂಖ್ಯೆಯ 5/11 ಭಾಗ = 25, ಸಂಖ್ಯೆ?", options: ["55", "44", "66", "33"], correct: 0, subject: 'maths', explanation: "(5/11)x = 25 ⇒ x = 55." },
+                { q: "ಒಂದು ಸಂಖ್ಯೆಯ 85% = 340, ಸಂಖ್ಯೆ?", options: ["400", "380", "420", "350"], correct: 0, subject: 'maths', explanation: "85% = 340 ⇒ 100% = 400." },
+                { q: "ಸಮೀಕರಣ 12x + 8 = 104, x = ?", options: ["8", "9", "7", "10"], correct: 0, subject: 'maths', explanation: "12x = 96 ⇒ x = 8." },
+                { q: "ಒಂದು ಸಂಖ್ಯೆಯ 95% = 475, ಸಂಖ್ಯೆ?", options: ["500", "450", "550", "600"], correct: 0, subject: 'maths', explanation: "95% = 475 ⇒ 100% = 500." },
+                { q: "ಒಂದು ಸಂಖ್ಯೆಯ 7/12 ಭಾಗ = 42, ಸಂಖ್ಯೆ?", options: ["72", "84", "60", "96"], correct: 0, subject: 'maths', explanation: "(7/12)x = 42 ⇒ x = 72." },
+                { q: "ಒಂದು ಸಂಖ್ಯೆಯ 3% = 15, ಸಂಖ್ಯೆ?", options: ["500", "450", "550", "600"], correct: 0, subject: 'maths', explanation: "3% = 15 ⇒ 1% = 5 ⇒ 100% = 500." },
+                // 191-200 Maths
+                { q: "ಒಂದು ಸಂಖ್ಯೆಯ 8/15 ಭಾಗ = 48, ಸಂಖ್ಯೆ?", options: ["90", "80", "100", "96"], correct: 0, subject: 'maths', explanation: "(8/15)x = 48 ⇒ x = 90." },
+                { q: "ಒಂದು ಸಂಖ್ಯೆಯ 48% = 144, ಸಂಖ್ಯೆ?", options: ["300", "280", "320", "250"], correct: 0, subject: 'maths', explanation: "48% = 144 ⇒ 100% = 300." },
+                { q: "ಸಮೀಕರಣ 13x - 9 = 82, x = ?", options: ["7", "8", "6", "9"], correct: 0, subject: 'maths', explanation: "13x = 91 ⇒ x = 7." },
+                { q: "ಒಂದು ಸಂಖ್ಯೆಯ 72% = 360, ಸಂಖ್ಯೆ?", options: ["500", "450", "550", "600"], correct: 0, subject: 'maths', explanation: "72% = 360 ⇒ 100% = 500." },
+                { q: "ಒಂದು ಸಂಖ್ಯೆಯ 9/16 ಭಾಗ = 63, ಸಂಖ್ಯೆ?", options: ["112", "108", "120", "96"], correct: 0, subject: 'maths', explanation: "(9/16)x = 63 ⇒ x = 112." },
+                { q: "ಒಂದು ಸಂಖ್ಯೆಯ 58% = 232, ಸಂಖ್ಯೆ?", options: ["400", "380", "420", "450"], correct: 0, subject: 'maths', explanation: "58% = 232 ⇒ 100% = 400." },
+                { q: "ಸಮೀಕರಣ 14x + 6 = 132, x = ?", options: ["9", "8", "10", "7"], correct: 0, subject: 'maths', explanation: "14x = 126 ⇒ x = 9." },
+                { q: "ಒಂದು ಸಂಖ್ಯೆಯ 88% = 440, ಸಂಖ್ಯೆ?", options: ["500", "480", "520", "550"], correct: 0, subject: 'maths', explanation: "88% = 440 ⇒ 100% = 500." },
+                { q: "ಒಂದು ಸಂಖ್ಯೆಯ 11/20 ಭಾಗ = 55, ಸಂಖ್ಯೆ?", options: ["100", "110", "90", "120"], correct: 0, subject: 'maths', explanation: "(11/20)x = 55 ⇒ x = 100." },
+                { q: "ಒಂದು ಸಂಖ್ಯೆಯ 97% = 485, ಸಂಖ್ಯೆ?", options: ["500", "450", "550", "600"], correct: 0, subject: 'maths', explanation: "97% = 485 ⇒ 100% = 500." }
+            ];
+
+            // Verify count
+            const totalQuestions = questionsData.length; // should be 200
+
+            // State
+            let userAnswers = new Array(totalQuestions).fill(null);
+            let quizSubmitted = false;
+            let currentFilter = 'all'; // 'all', 'science', 'maths'
+
+            // DOM elements
+            const questionsGrid = document.getElementById('questionsGrid');
+            const progressText = document.getElementById('progressText');
+            const liveScore = document.getElementById('liveScore');
+            const submitBtn = document.getElementById('submitBtn');
+            const resetBtn = document.getElementById('resetBtn');
+            const resultPanel = document.getElementById('resultPanel');
+            const finalScore = document.getElementById('finalScore');
+            const resultMessage = document.getElementById('resultMessage');
+            const sectionBreakdown = document.getElementById('sectionBreakdown');
+            const paginationInfo = document.getElementById('paginationInfo');
+            const filterBtns = document.querySelectorAll('.filter-btn');
+
+            // Count by subject
+            const scienceCount = questionsData.filter(q => q.subject === 'science').length;
+            const mathsCount = questionsData.filter(q => q.subject === 'maths').length;
+
+            function updateProgressAndLiveScore() {
+                const answeredCount = userAnswers.filter(a => a !== null).length;
+                progressText.textContent = `${answeredCount} / ${totalQuestions} ಪ್ರಶ್ನೆಗಳಿಗೆ ಉತ್ತರಿಸಲಾಗಿದೆ`;
+
+                if (!quizSubmitted) {
+                    let correctCount = 0;
+                    userAnswers.forEach((ans, idx) => {
+                        if (ans !== null && ans === questionsData[idx].correct) {
+                            correctCount++;
+                        }
+                    });
+                    liveScore.textContent = `ಅಂಕ: ${correctCount}`;
+                }
+            }
+
+            function getFilteredIndices() {
+                if (currentFilter === 'all') {
+                    return questionsData.map((_, i) => i);
+                }
+                return questionsData
+                    .map((q, i) => q.subject === currentFilter ? i : -1)
+                    .filter(i => i !== -1);
+            }
+
+            function renderQuestions() {
+                const indices = getFilteredIndices();
+                let html = '';
+
+                // Update pagination info
+                const startNum = indices.length > 0 ? indices[0] + 1 : 0;
+                const endNum = indices.length > 0 ? indices[indices.length - 1] + 1 : 0;
+                paginationInfo.textContent = `${indices.length} ಪ್ರಶ್ನೆಗಳು ತೋರಿಸಲಾಗಿದೆ (ಸಂಖ್ಯೆ ${startNum} ರಿಂದ ${endNum})`;
+
+                indices.forEach((index) => {
+                    const q = questionsData[index];
+                    const selectedOption = userAnswers[index];
+                    const isCorrect = (selectedOption !== null && selectedOption === q.correct);
+                    const highlightClass = (quizSubmitted && selectedOption !== null) 
+                        ? (isCorrect ? 'correct-highlight' : 'wrong-highlight') 
+                        : '';
+                    const subjectLabel = q.subject === 'science' ? 'ವಿಜ್ಞಾನ' : 'ಗಣಿತ';
+                    const subjectClass = q.subject === 'science' ? 'science' : 'maths';
+
+                    html += `<div class="question-card ${highlightClass}" data-qidx="${index}">`;
+                    html += `<div class="q-num">${index + 1}</div>`;
+                    html += `<div class="q-text">${q.q} <span class="subject-tag ${subjectClass}">${subjectLabel}</span></div>`;
+                    html += `<div class="options">`;
+
+                    q.options.forEach((opt, optIndex) => {
+                        const checked = (selectedOption === optIndex) ? 'checked' : '';
+                        const selectedClass = (selectedOption === optIndex) ? 'selected' : '';
+                        html += `<label class="option-item ${selectedClass}">`;
+                        html += `<input type="radio" name="q${index}" value="${optIndex}" data-qidx="${index}" data-optidx="${optIndex}" ${checked}>`;
+                        html += `${opt}`;
+                        html += `</label>`;
+                    });
+
+                    html += `</div>`;
+
+                    const explanationVisible = quizSubmitted ? 'show' : '';
+                    html += `<div class="explanation-box ${explanationVisible}" id="explain-${index}">`;
+                    html += `<strong>💡 ವಿವರಣೆ:</strong> ${q.explanation}`;
+                    html += `</div>`;
+
+                    html += `</div>`;
+                });
+
+                questionsGrid.innerHTML = html;
+
+                if (!quizSubmitted) {
+                    document.querySelectorAll('input[type="radio"]').forEach(radio => {
+                        radio.addEventListener('change', function(e) {
+                            if (quizSubmitted) return;
+                            const qIdx = parseInt(this.dataset.qidx);
+                            const optIdx = parseInt(this.dataset.optidx);
+                            userAnswers[qIdx] = optIdx;
+
+                            const parentCard = this.closest('.question-card');
+                            parentCard.querySelectorAll('.option-item').forEach(label => {
+                                label.classList.remove('selected');
+                            });
+                            this.closest('.option-item').classList.add('selected');
+
+                            updateProgressAndLiveScore();
+                        });
+                    });
+                }
+            }
+
+            function resetQuiz() {
+                userAnswers = new Array(totalQuestions).fill(null);
+                quizSubmitted = false;
+                currentFilter = 'all';
+                filterBtns.forEach(b => b.classList.remove('active'));
+                document.querySelector('.filter-btn[data-filter="all"]').classList.add('active');
+                resultPanel.classList.add('hidden');
+                renderQuestions();
+                updateProgressAndLiveScore();
+                liveScore.textContent = `ಅಂಕ: 0`;
+                questionsGrid.scrollTop = 0;
+            }
+
+            function submitQuiz() {
+                if (quizSubmitted) return;
+
+                let score = 0;
+                let scienceScore = 0;
+                let mathsScore = 0;
+
+                userAnswers.forEach((ans, idx) => {
+                    if (ans !== null && ans === questionsData[idx].correct) {
+                        score++;
+                        if (questionsData[idx].subject === 'science') scienceScore++;
+                        else mathsScore++;
+                    }
+                });
+
+                quizSubmitted = true;
+
+                finalScore.innerHTML = `${score}<small>/${totalQuestions}</small>`;
+                let message = '';
+                const percent = (score / totalQuestions) * 100;
+                if (percent >= 90) message = '🏆 ಅದ್ಭುತ! ನೀವು ಎನ್‌ಎಂಎಂಎಸ್‌ಗೆ ಸಿದ್ಧರು!';
+                else if (percent >= 75) message = '🌟 ತುಂಬಾ ಚೆನ್ನಾಗಿದೆ! ಇನ್ನಷ್ಟು ಅಭ್ಯಾಸ ಮಾಡಿ.';
+                else if (percent >= 50) message = '📚 ಉತ್ತಮ ಪ್ರಯತ್ನ! ಸುಧಾರಣೆಗೆ ಅವಕಾಶವಿದೆ.';
+                else message = '💪 ಇನ್ನಷ್ಟು ಅಭ್ಯಾಸ ಮಾಡಿ, ನೀವು ಖಂಡಿತ ಗೆಲ್ಲುತ್ತೀರಿ!';
+                resultMessage.textContent = message;
+
+                // Section breakdown
+                sectionBreakdown.innerHTML = `
+                    <div class="breakdown-item">🔬 ವಿಜ್ಞಾನ: ${scienceScore}/${scienceCount}</div>
+                    <div class="breakdown-item">📐 ಗಣಿತ: ${mathsScore}/${mathsCount}</div>
+                `;
+
+                resultPanel.classList.remove('hidden');
+                liveScore.textContent = `ಅಂಕ: ${score}`;
+
+                // Re-render with highlights and explanations
+                currentFilter = 'all';
+                filterBtns.forEach(b => b.classList.remove('active'));
+                document.querySelector('.filter-btn[data-filter="all"]').classList.add('active');
+                renderQuestions();
+
+                resultPanel.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+
+            function init() {
+                renderQuestions();
+                updateProgressAndLiveScore();
+
+                submitBtn.addEventListener('click', submitQuiz);
+                resetBtn.addEventListener('click', resetQuiz);
+
+                // Filter buttons
+                filterBtns.forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        if (quizSubmitted) return; // prevent filtering after submit
+                        currentFilter = this.dataset.filter;
+                        filterBtns.forEach(b => b.classList.remove('active'));
+                        this.classList.add('active');
+                        renderQuestions();
+                        updateProgressAndLiveScore();
+                        questionsGrid.scrollTop = 0;
+                    });
+                });
+            }
+
+            init();
+        })();
+    </script>
+</body>
+  </html>
